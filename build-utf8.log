@@ -4,7 +4,7 @@
 
 [33mΓ¥»[39m Building...
 [32mΓ£ö[39m Building...
-Application bundle generation failed. [4.994 seconds]
+Application bundle generation failed. [4.265 seconds]
 
 node.exe : [1m[33m[33mΓû▓ 
 [43;33m[[43;30mWARNING[43;
@@ -43,59 +43,72 @@ EmptyStateComponent,
               
 [32m~~~~~~~~[0m
 
+
+[33mΓû▓ [43;33m[[43;30mWAR
+NING[43;33m][0m 
+[1mTS-998113: DatePipe is 
+not used within the template 
+of ProcessDefinitionDetailCom
+ponent[0m [1m[35m[plugin 
+angular-compiler][0m
+
+    src/app/features/processe
+s/process-definition-detail/p
+rocess-definition-detail.comp
+onent.ts:26:203:
+[37m      26 Γöé 
+...ownsModule, 
+LoadingStateComponent, 
+EmptyStateComponent, 
+[32mDatePipe[37m],
+         Γò╡                 
+                             
+              
+[32m~~~~~~~~[0m
+
+
+[33mΓû▓ [43;33m[[43;30mWAR
+NING[43;33m][0m 
+[1mTS-998113: DatePipe is 
+not used within the template 
+of ProcessDefinitionListCompo
+nent[0m [1m[35m[plugin 
+angular-compiler][0m
+
+    src/app/features/processe
+s/process-definition-list/pro
+cess-definition-list.componen
+t.ts:21:190:
+[37m      21 Γöé 
+...rComponent, 
+LoadingStateComponent, 
+EmptyStateComponent, 
+[32mDatePipe[37m],
+         Γò╡                 
+                             
+              
+[32m~~~~~~~~[0m
+
 [39m[22m
 [1m[31m[31mX [41;31m[[41
 ;97mERROR[41;31m][0m 
-[1mNG8001: 'kendo-loader' 
-is not a known element:
-1. If 'kendo-loader' is an 
-Angular component, then 
-verify that it is included 
-in the '@Component.imports' 
-of this component.
-2. If 'kendo-loader' is a 
-Web Component then add 
-'CUSTOM_ELEMENTS_SCHEMA' to 
-the '@Component.schemas' of 
-this component to suppress 
-this message.[0m 
+[1mTS2339: Property 
+'processCode' does not exist 
+on type 
+'ProcessDefinition'.[0m 
 [1m[35m[plugin 
 angular-compiler][0m
 
-    src/app/features/service-
-items/service-item-detail/ser
-vice-item-detail.component.ts
-:57:63:
-[37m      57 Γöé ...oading" 
-style="padding: 24px;">[32m<
-kendo-loader>[37m</kendo-loa
-der></div>
-         Γò╡                 
-                  
-[32m~~~~~~~~~~~~~~[0m
-
-
-[31mX [41;31m[[41;97mERROR
-[41;31m][0m [1mTS2694: 
-Namespace '"C:/Users/rajar/De
-sktop/Process Tradker app/Pro
-cessTrackerUI/node_modules/@p
-rogress/kendo-data-query/dist
-/npm/main"' has no exported 
-member 'GridDataResult'.[0m 
-[1m[35m[plugin 
-angular-compiler][0m
-
-    src/app/features/service-
-items/service-item-list/servi
-ce-item-list.component.ts:127
-:49:
-[37m      127 Γöé ...mport('
-@progress/kendo-data-query').
-[32mGridDataResult[37m | 
-null = null;
+    src/app/features/processe
+s/process-definition-list/pro
+cess-definition-list.componen
+t.ts:112:75:
+[37m      112 Γöé 
+...cessCode: d.formCode || 
+d.[32mprocessCode[37m || 
+d.formCode })); // ma...
           Γò╡                
-                        
-[32m~~~~~~~~~~~~~~[0m
+              
+[32m~~~~~~~~~~~[0m
 
 [39m[22m

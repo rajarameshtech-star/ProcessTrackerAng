@@ -1,3 +1,4 @@
+
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -13,4 +14,7 @@ export class ProcessFieldService {
     const url = processDefinitionId ? `${this.apiUrl}?processDefinitionId=${processDefinitionId}` : this.apiUrl;
     return this.http.get<ProcessField[]>(url);
   }
+  createProcessField(field: Partial<ProcessField>): Observable<ProcessField> { return this.http.post<ProcessField>(this.apiUrl, field); }
+  updateProcessField(id: string, field: Partial<ProcessField>): Observable<ProcessField> { return this.http.put<ProcessField>(`${this.apiUrl}/${id}`, field); }
+  deleteProcessField(id: string): Observable<void> { return this.http.delete<void>(`${this.apiUrl}/${id}`); }
 }

@@ -1,4 +1,8 @@
+const fs = require('fs');
+const path = require('path');
 
+const files = {
+    "src/app/features/service-items/service-item-detail/service-item-detail.component.ts": `
 import { Component, OnInit, inject } from '@angular/core'; 
 import { CommonModule, DatePipe } from '@angular/common'; 
 import { ActivatedRoute, RouterModule } from '@angular/router'; 
@@ -29,7 +33,7 @@ import { catchError } from 'rxjs/operators';
   selector: 'app-service-item-detail',
   standalone: true,
   imports: [CommonModule, RouterModule, ButtonModule, IconsModule, DialogsModule, ReactiveFormsModule, InputsModule, DropDownsModule, IndicatorsModule, LayoutModule, StatusChipComponent, PriorityChipComponent, LoadingStateComponent, DatePipe, DynamicProcessFormComponent],
-  template: `
+  template: \`
     <div class="breadcrumb mb-4">
        <a routerLink="/service-items">Service Items</a>
        <kendo-icon name="chevron-right" class="mx-2"></kendo-icon>
@@ -162,8 +166,8 @@ import { catchError } from 'rxjs/operators';
          <button kendoButton themeColor="primary" (click)="saveEdit()" [disabled]="editForm.invalid || saving">{{saving ? 'Saving...' : 'Save Changes'}}</button>
       </kendo-dialog-actions>
     </kendo-dialog>
-  `,
-  styles: [`
+  \`,
+  styles: [\`
     .mb-4 { margin-bottom: 16px; } .mb-2 { margin-bottom: 8px; } .mx-2 { margin: 0 8px; } .mt-2 { margin-top: 8px; }
     .breadcrumb { display: flex; align-items: center; font-size: 0.875rem; color: var(--muted-text-color); }
     .breadcrumb a { color: var(--primary-color); }
@@ -196,7 +200,7 @@ import { catchError } from 'rxjs/operators';
     .text-center { text-align: center; }
     
     .process-audit-bar { font-size: 0.75rem; color: var(--muted-text-color); margin-bottom: 12px; text-align: right; }
-  `]
+  \`]
 })
 export class ServiceItemDetailComponent implements OnInit {
   private route = inject(ActivatedRoute); 
@@ -309,3 +313,12 @@ export class ServiceItemDetailComponent implements OnInit {
     });
   }
 }
+`
+};
+
+for (const [filePath, content] of Object.entries(files)) {
+    const fullPath = path.resolve(__dirname, filePath);
+    fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+    fs.writeFileSync(fullPath, content, 'utf8');
+}
+console.log('Dynamic process injected to details.');

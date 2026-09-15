@@ -14,7 +14,8 @@ export const routes: Routes = [
       { path: 'service-items', loadComponent: () => import('./features/service-items/service-item-list/service-item-list.component').then(m => m.ServiceItemListComponent) },
       { path: 'service-items/create', loadComponent: () => import('./features/service-items/service-item-create/service-item-create.component').then(m => m.ServiceItemCreateComponent) },
       { path: 'service-items/:id', loadComponent: () => import('./features/service-items/service-item-detail/service-item-detail.component').then(m => m.ServiceItemDetailComponent) },
-      { path: 'processes', loadComponent: () => import('./features/processes/process-definition-list/process-definition-list.component').then(m => m.ProcessDefinitionListComponent) }
+      { path: 'processes', loadComponent: () => import('./features/processes/process-definition-list/process-definition-list.component').then(m => m.ProcessDefinitionListComponent) },
+      { path: 'processes/:id', loadComponent: () => import('./features/processes/process-definition-detail/process-definition-detail.component').then(m => m.ProcessDefinitionDetailComponent) }
     ]
   }
 ];
