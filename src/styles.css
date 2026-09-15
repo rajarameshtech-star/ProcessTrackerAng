@@ -1,1 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #3b82f6;
+  --primary-light: #eff6ff;
+  --primary-dark: #2563eb;
+  
+  --background-color: #f8fafc;
+  --surface-color: #ffffff;
+  
+  --text-color: #0f172a;
+  --muted-text-color: #64748b;
+  --border-color: #e2e8f0;
+  
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+  --info-color: #3b82f6;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+* { box-sizing: border-box; }
+h1, h2, h3, h4, h5, h6 { color: var(--text-color); }
+a { color: var(--primary-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Dashboard layout utility */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px; }
+.section-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 16px; color: var(--text-color); }
+
+/* Forms utility */
+.pt-form { padding: 8px 0; }
+.form-row { margin-bottom: 16px; display: flex; flex-direction: column; width: 100%; }
+.split-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.split-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.form-actions { display: flex; justify-content: flex-end; gap: 16px; border-top: 1px solid var(--border-color); padding-top: 24px; margin-top: 24px; }
+
+/* Muted */
+.muted-text { color: var(--muted-text-color) !important; }
+.monospaced { font-family: monospace; }
+.fw-500 { font-weight: 500; }
+  

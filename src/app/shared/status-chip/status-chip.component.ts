@@ -1,0 +1,3 @@
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+@Component({ selector: 'app-status-chip', standalone: true, imports: [CommonModule], template: `<span class="pt-chip pt-chip-{{status | lowercase}}">{{status}}</span>`, styles: [`.pt-chip { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 500; height: 24px; } .pt-chip-open, .pt-chip-new, .pt-chip-active { background: #e0f2fe; color: #0284c7; } .pt-chip-in-progress, .pt-chip-inprogress { background: #fef08a; color: #854d0e; } .pt-chip-resolved, .pt-chip-closed, .pt-chip-completed { background: #dcfce7; color: #166534; }`] }) export class StatusChipComponent { @Input() status: string = 'Unknown'; }

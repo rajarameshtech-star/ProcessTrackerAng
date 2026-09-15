@@ -1,0 +1,3 @@
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+@Component({ selector: 'app-priority-chip', standalone: true, imports: [CommonModule], template: `<span class="pt-chip pt-priority-{{priority | lowercase}}">{{priority}}</span>`, styles: [`.pt-chip { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 500; height: 24px; } .pt-priority-high, .pt-priority-critical { background: #fee2e2; color: #991b1b; } .pt-priority-medium { background: #ffedd5; color: #9a3412; } .pt-priority-low { background: #f3f4f6; color: #374151; }`] }) export class PriorityChipComponent { @Input() priority: string = 'Medium'; }

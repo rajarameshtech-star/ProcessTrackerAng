@@ -1,0 +1,1 @@
+export interface Application { id: string; projectId: string; name: string; description?: string; }

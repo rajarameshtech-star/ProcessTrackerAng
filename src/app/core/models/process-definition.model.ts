@@ -1,0 +1,1 @@
+export interface ProcessDefinition { id: string; name: string; description?: string; active: boolean; createdDate: string; formCode: string; }

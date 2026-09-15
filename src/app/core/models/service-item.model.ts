@@ -1,0 +1,1 @@
+export interface ServiceItem { id: string; applicationId: string; processDefinitionId?: string; referenceNumber: string; title: string; status: string; priority: string; assignedTo?: string; createdAt?: string; updatedAt?: string; }
