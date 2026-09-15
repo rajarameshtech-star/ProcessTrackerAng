@@ -45,7 +45,7 @@ import { forkJoin, of } from 'rxjs';
          </div>
          <div class="header-actions">
             <button kendoButton themeColor="primary" icon="plus" (click)="router.navigate(['/service-items/create'])">New Service Item</button>
-            <button kendoButton icon="pencil" (click)="openEdit()">Edit</button>
+            <button kendoButton (click)="openEdit()">Edit App</button>
          </div>
       </div>
 
@@ -70,9 +70,9 @@ import { forkJoin, of } from 'rxjs';
                    <span class="muted-text">{{dataItem.assignedTo || 'Unassigned'}}</span>
                 </ng-template>
              </kendo-grid-column>
-             <kendo-grid-column title="" [width]="60">
+             <kendo-grid-column title="Action" [width]="90">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                   <button kendoButton icon="chevron-right" fillMode="flat" [routerLink]="['/service-items', dataItem.id]"></button>
+                   <button kendoButton fillMode="flat" themeColor="primary" [routerLink]="['/service-items', dataItem.id]">Open</button>
                 </ng-template>
              </kendo-grid-column>
            </kendo-grid>

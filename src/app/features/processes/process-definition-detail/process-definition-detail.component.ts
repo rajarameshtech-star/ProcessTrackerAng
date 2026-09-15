@@ -70,10 +70,10 @@ import { process as kendoProcess, State } from '@progress/kendo-data-query';
                          <kendo-icon name="check" *ngIf="dataItem.isRequired" style="color: #10b981;"></kendo-icon>
                      </ng-template>
                   </kendo-grid-column>
-                  <kendo-grid-column title="Actions" [width]="120">
+                  <kendo-grid-column title="Actions" [width]="180">
                      <ng-template kendoGridCellTemplate let-dataItem>
-                        <button kendoButton icon="pencil" fillMode="flat" (click)="openFieldEdit(dataItem)"></button>
-                        <button kendoButton icon="trash" fillMode="flat" themeColor="error" (click)="confirmFieldDelete(dataItem)"></button>
+                        <button kendoButton  fillMode="flat" (click)="openFieldEdit(dataItem)" themeColor="primary">Edit</button>
+                        <button kendoButton  fillMode="flat" themeColor="error">Delete</button>
                      </ng-template>
                   </kendo-grid-column>
                </kendo-grid>

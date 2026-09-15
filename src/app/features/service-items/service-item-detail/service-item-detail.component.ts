@@ -50,7 +50,7 @@ import { catchError } from 'rxjs/operators';
          </div>
          <div class="header-actions">
             <button kendoButton icon="pencil" (click)="openEdit()">Edit</button>
-            <button kendoButton icon="more-vertical" fillMode="flat"></button>
+            <button kendoButton  fillMode="flat">More</button>
          </div>
       </div>
 

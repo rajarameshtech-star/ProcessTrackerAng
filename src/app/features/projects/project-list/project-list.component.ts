@@ -28,7 +28,7 @@ import { Project } from '../../../core/models/project.model';
     <div class="project-grid" *ngIf="!loading && !error && projects.length > 0">
       <div class="item-card" *ngFor="let p of projects" [routerLink]="['/projects', p.id]">
         <div class="card-header"><div class="card-avatar"><kendo-icon name="folder"></kendo-icon></div>
-        <div><h4>{{p.name}}</h4><span class="muted-text">ID: {{p.id | slice:0:8}}</span></div></div>
+        <div><h4>{{p.name}}</h4><span class="muted-text">ID: {{p.id}}</span></div></div>
         <p class="description-text">{{p.description || 'No description provided.'}}</p>
       </div>
     </div>
@@ -47,5 +47,5 @@ import { Project } from '../../../core/models/project.model';
 export class ProjectListComponent implements OnInit {
   private projectService = inject(ProjectService);
   projects: Project[] = []; loading = true; error = false;
-  ngOnInit() { this.projectService.getProjects().subscribe({ next: (v) => { this.projects = v; this.loading = false; }, error: () => { this.error = true; this.loading = false; }}); }
+  ngOnInit() { this.projectService.getProjects().subscribe({ next: (v) => { this.projects = v; this.loading = false; }, error: () => { this.error = true; this.loading = false; } }); }
 }

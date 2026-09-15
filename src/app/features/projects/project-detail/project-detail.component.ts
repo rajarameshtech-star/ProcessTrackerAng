@@ -41,7 +41,7 @@ import { forkJoin, of } from 'rxjs';
          </div>
          <div class="header-actions">
             <button kendoButton themeColor="primary" icon="plus" (click)="router.navigate(['/applications/create'], {queryParams: {projectId: project.id}})">New Application</button>
-            <button kendoButton icon="pencil" (click)="openEdit()">Edit</button>
+            <button kendoButton (click)="openEdit()">Edit Project</button>
          </div>
       </div>
 

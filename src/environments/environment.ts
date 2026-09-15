@@ -1,1 +1,1 @@
-export const environment = { production: false, apiBaseUrl: '/api' };
+export const environment = { production: false, apiBaseUrl: 'https://localhost:7269/api' };

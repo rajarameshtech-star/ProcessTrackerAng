@@ -19,7 +19,7 @@ import { ApplicationService } from '../../../core/services/application.service';
     <app-loading-state *ngIf="loading"></app-loading-state>
     <div class="app-grid" *ngIf="!loading && applications.length > 0">
       <div class="item-card" *ngFor="let a of applications">
-        <h4>{{a.name}}</h4><span class="muted-text">Project: {{a.projectId | slice:0:8}}</span>
+        <h4>{{a.name}}</h4><span class="muted-text">Project ID: {{a.projectId || 'None'}}</span>
         <p class="description-text">{{a.description || 'No description provided.'}}</p>
       </div>
     </div>
