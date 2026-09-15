@@ -13,4 +13,12 @@ export class ApplicationService {
     const url = projectId ? `${this.apiUrl}?projectId=${projectId}` : this.apiUrl;
     return this.http.get<Application[]>(url);
   }
+
+  getApplication(id: string): Observable<Application> {
+    return this.http.get<Application>(`${this.apiUrl}/${id}`);
+  }
+
+  updateApplication(id: string, app: any): Observable<Application> {
+    return this.http.put<Application>(`${this.apiUrl}/${id}`, app);
+  }
 }

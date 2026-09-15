@@ -1,33 +1,49 @@
+
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IconsModule } from '@progress/kendo-angular-icons';
-import { CommonModule } from '@angular/common';
-@Component({ selector: 'app-sidebar', standalone: true, imports: [RouterModule, IconsModule, CommonModule], template: `
-<div class="sidebar-container" [class.collapsed]="collapsed">
-  <div class="brand"><div class="logo"></div><span class="brand-text" *ngIf="!collapsed">ProcessTracker</span></div>
-  <nav class="nav-section">
-    <div class="nav-label" *ngIf="!collapsed">ProcessTracker</div>
-    <a class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><kendo-icon name="home"></kendo-icon><span *ngIf="!collapsed">Home</span></a>
-    <a class="nav-item" routerLink="/projects" routerLinkActive="active"><kendo-icon name="folder"></kendo-icon><span *ngIf="!collapsed">Projects</span></a>
-    <a class="nav-item" routerLink="/applications" routerLinkActive="active"><kendo-icon name="grid"></kendo-icon><span *ngIf="!collapsed">Applications</span></a>
-    <a class="nav-item" routerLink="/service-items" routerLinkActive="active"><kendo-icon name="form"></kendo-icon><span *ngIf="!collapsed">Service Items</span></a>
-    <a class="nav-item" routerLink="/processes" routerLinkActive="active"><kendo-icon name="list-unordered"></kendo-icon><span *ngIf="!collapsed">ProcessDefinitions</span></a>
-  </nav>
-  <div class="spacer"></div>
-</div>
-`, styles: [`
-.sidebar-container { display: flex; flex-direction: column; height: 100%; border-right: 1px solid var(--border-color); background: var(--surface-color); transition: width 0.2s; width: 260px; }
-.sidebar-container.collapsed { width: 64px; }
-.brand { height: 64px; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid var(--border-color); }
-.logo { width: 32px; height: 32px; background: var(--primary-color); border-radius: 8px; margin-right: 16px; flex-shrink: 0; }
-.brand-text { font-weight: 600; font-size: 1.125rem; white-space: nowrap; }
-.nav-section { margin-top: 16px; display: flex; flex-direction: column; }
-.nav-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 600; color: var(--muted-text-color); margin: 8px 16px; }
-.spacer { flex: 1; }
-.nav-item { display: flex; align-items: center; padding: 10px 16px; color: var(--text-color); text-decoration: none; margin: 0 16px 4px 0; border-radius: 0 24px 24px 0; font-weight: 500; font-size: 0.875rem; }
-.sidebar-container.collapsed .nav-item { margin: 0 8px 8px 8px; border-radius: 8px; justify-content: center; padding: 10px 0; }
-.nav-item:hover { background: #f1f5f9; }
-.nav-item.active { background: var(--primary-light); color: var(--primary-color); }
-.nav-item kendo-icon { margin-right: 16px; font-size: 20px; }
-.sidebar-container.collapsed .nav-item kendo-icon { margin-right: 0; }
-`] }) export class SidebarComponent { @Input() collapsed = false; }
+
+@Component({
+  selector: 'app-sidebar',
+  standalone: true,
+  imports: [CommonModule, RouterModule, IconsModule],
+  template: `
+    <div class="sidebar">
+      <div class="branding">
+         <div class="logo"></div>
+         <span class="brand-name">ProcessTracker</span>
+      </div>
+      <nav class="nav-menu">
+        <div class="nav-section">MAIN</div>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link"><kendo-icon name="home"></kendo-icon> Home</a>
+        <a routerLink="/projects" routerLinkActive="active" class="nav-link"><kendo-icon name="folder"></kendo-icon> Projects</a>
+        <a routerLink="/applications" routerLinkActive="active" class="nav-link"><kendo-icon name="grid-layout"></kendo-icon> Applications</a>
+        <a routerLink="/service-items" routerLinkActive="active" class="nav-link"><kendo-icon name="parameter-header"></kendo-icon> Service Items</a>
+        <a routerLink="/processes" routerLinkActive="active" class="nav-link"><kendo-icon name="gear"></kendo-icon> Processes</a>
+
+        <div class="nav-section">PERSONAL</div>
+        <a routerLink="/my-work" routerLinkActive="active" class="nav-link"><kendo-icon name="user"></kendo-icon> My Work</a>
+        <a routerLink="/recently-viewed" routerLinkActive="active" class="nav-link"><kendo-icon name="clock"></kendo-icon> Recently Viewed</a>
+      </nav>
+      
+      <div class="spacer"></div>
+      <nav class="nav-menu">
+        <a routerLink="/settings" routerLinkActive="active" class="nav-link"><kendo-icon name="sliders"></kendo-icon> Settings</a>
+      </nav>
+    </div>
+  `,
+  styles: [`
+    .sidebar { width: 260px; height: 100%; background: #0f172a; color: #94a3b8; display: flex; flex-direction: column; }
+    .branding { height: 60px; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid #1e293b; gap: 12px; }
+    .logo { width: 24px; height: 24px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: 6px; }
+    .brand-name { color: #f8fafc; font-weight: 600; font-size: 1.1rem; letter-spacing: -0.02em; }
+    .nav-menu { padding: 24px 16px 0; display: flex; flex-direction: column; gap: 4px; }
+    .nav-section { font-size: 0.7rem; font-weight: 700; color: #475569; margin: 16px 0 8px 12px; letter-spacing: 0.05em; }
+    .nav-link { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 8px; color: #cbd5e1; text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: all 0.2s; }
+    .nav-link:hover { background: #1e293b; color: #f8fafc; }
+    .nav-link.active { background: #6366f1; color: white; }
+    .spacer { flex: 1; }
+  `]
+})
+export class SidebarComponent { @Input() collapsed = false; }

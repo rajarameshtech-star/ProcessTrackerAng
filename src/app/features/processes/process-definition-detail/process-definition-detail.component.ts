@@ -23,7 +23,7 @@ import { process as kendoProcess, State } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-process-definition-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, GridModule, ButtonModule, IconsModule, DialogsModule, InputsModule, DropDownsModule, LoadingStateComponent, EmptyStateComponent, DatePipe],
+  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, GridModule, ButtonModule, IconsModule, DialogsModule, InputsModule, DropDownsModule, LoadingStateComponent, EmptyStateComponent],
   template: `
     <div class="breadcrumb mb-4">
        <a routerLink="/processes">Processes</a>

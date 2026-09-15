@@ -4,16 +4,54 @@
 
 [33mΓ¥»[39m Building...
 [32mΓ£ö[39m Building...
-Application bundle generation failed. [4.265 seconds]
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m                              [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-OURMTAOS.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.43 MB[39m[2m | [22m              [36m250.01 kB[39m
+[32mstyles-SKPJTCPB.css[39m  [2m | [22m[2mstyles[22m                             [2m | [22m[36m888.42 kB[39m[2m | [22m               [36m88.22 kB[39m
+[32mchunk-I7I7KO5Q.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m728.01 kB[39m[2m | [22m              [36m159.18 kB[39m
+[32mchunk-VDVOA443.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m611.69 kB[39m[2m | [22m              [36m103.70 kB[39m
+[32mchunk-RHIG77RE.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m371.49 kB[39m[2m | [22m               [36m58.22 kB[39m
+[32mchunk-H62VI6WT.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m334.52 kB[39m[2m | [22m               [36m62.49 kB[39m
+[32mchunk-JA2YQDKP.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m219.05 kB[39m[2m | [22m               [36m60.31 kB[39m
+[32mchunk-BZVEL5UM.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m179.80 kB[39m[2m | [22m               [36m52.37 kB[39m
+[32mpolyfills-5CFQRCPP.js[39m[2m | [22m[2mpolyfills[22m                          [2m | [22m [36m34.59 kB[39m[2m | [22m               [36m11.33 kB[39m
+[32mmain-5UQGYJML.js[39m     [2m | [22m[2mmain[22m                               [2m | [22m [36m29.11 kB[39m[2m | [22m                [36m7.29 kB[39m
+[32mchunk-FCWWFL7W.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m  [36m9.03 kB[39m[2m | [22m                [36m2.49 kB[39m
+[32mchunk-MZHXTHEB.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m  [36m4.18 kB[39m[2m | [22m                [36m1.07 kB[39m
+[32mchunk-NQB442HW.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.82 kB[39m[2m | [22m              [36m584 bytes[39m
+[32mchunk-EJODZXZH.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.79 kB[39m[2m | [22m              [36m793 bytes[39m
+[32mchunk-TCX6WJBL.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.16 kB[39m[2m | [22m              [36m580 bytes[39m
+[32mchunk-2ZP4SBLY.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m648 bytes[39m[2m | [22m              [36m648 bytes[39m
+[32mchunk-XUCLFENK.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m518 bytes[39m[2m | [22m              [36m518 bytes[39m
+[32mchunk-VDUM34V3.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m513 bytes[39m[2m | [22m              [36m513 bytes[39m
+[32mchunk-PAJKH5OQ.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m466 bytes[39m[2m | [22m              [36m466 bytes[39m
+[32mchunk-EPJ562QG.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m248 bytes[39m[2m | [22m              [36m248 bytes[39m
+
+[1m [22m                    [2m | [22m[1mInitial total[22m                      [2m | [22m  [1m[91m4.84 MB[39m[22m[2m | [22m              [1m861.04 kB[22m
+
+[1mLazy chunk files[22m     [2m | [22m[1mNames[22m                              [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-SBN34YHN.js[39m    [2m | [22m[2mbrowser[22m                            [2m | [22m [36m64.03 kB[39m[2m | [22m               [36m17.12 kB[39m
+[32mchunk-GWEYJUOA.js[39m    [2m | [22m[2mservice-item-detail-component[22m      [2m | [22m [36m28.19 kB[39m[2m | [22m                [36m7.23 kB[39m
+[32mchunk-EDYQEAV5.js[39m    [2m | [22m[2mprocess-definition-detail-component[22m[2m | [22m [36m17.77 kB[39m[2m | [22m                [36m4.85 kB[39m
+[32mchunk-HGX2LCYZ.js[39m    [2m | [22m[2mservice-item-list-component[22m        [2m | [22m [36m11.78 kB[39m[2m | [22m                [36m3.26 kB[39m
+[32mchunk-YF4HAVEX.js[39m    [2m | [22m[2mproject-detail-component[22m           [2m | [22m  [36m9.97 kB[39m[2m | [22m                [36m3.04 kB[39m
+[32mchunk-AL3X7SBR.js[39m    [2m | [22m[2mprocess-definition-list-component[22m  [2m | [22m  [36m9.55 kB[39m[2m | [22m                [36m2.82 kB[39m
+[32mchunk-WRF7CHJ6.js[39m    [2m | [22m[2mdashboard-component[22m                [2m | [22m  [36m7.98 kB[39m[2m | [22m                [36m2.40 kB[39m
+[32mchunk-DPMT5BNU.js[39m    [2m | [22m[2mservice-item-create-component[22m      [2m | [22m  [36m4.77 kB[39m[2m | [22m                [36m1.70 kB[39m
+[32mchunk-EV2AJQTR.js[39m    [2m | [22m[2mproject-list-component[22m             [2m | [22m  [36m3.47 kB[39m[2m | [22m                [36m1.36 kB[39m
+[32mchunk-HITDZJ5L.js[39m    [2m | [22m[2mapplication-list-component[22m         [2m | [22m  [36m2.46 kB[39m[2m | [22m                [36m1.05 kB[39m
+[32mchunk-WUDWGSUW.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m632 bytes[39m[2m | [22m              [36m632 bytes[39m
+[32mchunk-A6URSUNJ.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m600 bytes[39m[2m | [22m              [36m600 bytes[39m
+[32mchunk-IXUS6GZ3.js[39m    [2m | [22m[2m-[22m                                  [2m | [22m[36m592 bytes[39m[2m | [22m              [36m592 bytes[39m
+
+Application bundle generation failed. [7.484 seconds]
 
 node.exe : [1m[33m[33mΓû▓ 
 [43;33m[[43;30mWARNING[43;
-33m][0m [1mTS-998113: 
-DatePipe is not used within 
-the template of 
-DashboardComponent[0m 
-[1m[35m[plugin 
-angular-compiler][0m
+33m][0m [1mbundle initial 
+exceeded maximum budget. 
+Budget 2.00 MB was not met 
+by 2.84 MB with a total of 
+4.84 MB.[0m
 At C:\Program 
 Files\nodejs\npm.ps1:29 
 char:3
@@ -23,92 +61,19 @@ $args
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo           
    : NotSpecified: ([1m[3  
-  3m[33mΓ...r-compiler][   
+  3m[33mΓ...of 4.84 MB.[   
  0m:String) [], RemoteExc    
 eption
     + FullyQualifiedErrorId  
    : NativeCommandError
  
 
-    src/app/features/dashboar
-d/dashboard.component.ts:22:1
-74:
-[37m      22 Γöé 
-...pComponent, 
-LoadingStateComponent, 
-EmptyStateComponent, 
-[32mDatePipe[37m],
-         Γò╡                 
-                             
-              
-[32m~~~~~~~~[0m
-
-
-[33mΓû▓ [43;33m[[43;30mWAR
-NING[43;33m][0m 
-[1mTS-998113: DatePipe is 
-not used within the template 
-of ProcessDefinitionDetailCom
-ponent[0m [1m[35m[plugin 
-angular-compiler][0m
-
-    src/app/features/processe
-s/process-definition-detail/p
-rocess-definition-detail.comp
-onent.ts:26:203:
-[37m      26 Γöé 
-...ownsModule, 
-LoadingStateComponent, 
-EmptyStateComponent, 
-[32mDatePipe[37m],
-         Γò╡                 
-                             
-              
-[32m~~~~~~~~[0m
-
-
-[33mΓû▓ [43;33m[[43;30mWAR
-NING[43;33m][0m 
-[1mTS-998113: DatePipe is 
-not used within the template 
-of ProcessDefinitionListCompo
-nent[0m [1m[35m[plugin 
-angular-compiler][0m
-
-    src/app/features/processe
-s/process-definition-list/pro
-cess-definition-list.componen
-t.ts:21:190:
-[37m      21 Γöé 
-...rComponent, 
-LoadingStateComponent, 
-EmptyStateComponent, 
-[32mDatePipe[37m],
-         Γò╡                 
-                             
-              
-[32m~~~~~~~~[0m
-
 [39m[22m
 [1m[31m[31mX [41;31m[[41
 ;97mERROR[41;31m][0m 
-[1mTS2339: Property 
-'processCode' does not exist 
-on type 
-'ProcessDefinition'.[0m 
-[1m[35m[plugin 
-angular-compiler][0m
-
-    src/app/features/processe
-s/process-definition-list/pro
-cess-definition-list.componen
-t.ts:112:75:
-[37m      112 Γöé 
-...cessCode: d.formCode || 
-d.[32mprocessCode[37m || 
-d.formCode })); // ma...
-          Γò╡                
-              
-[32m~~~~~~~~~~~[0m
+[1mbundle initial exceeded 
+maximum budget. Budget 4.00 
+MB was not met by 843.80 kB 
+with a total of 4.84 MB.[0m
 
 [39m[22m

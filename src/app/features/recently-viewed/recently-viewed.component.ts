@@ -1,0 +1,51 @@
+
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { PageHeaderComponent } from '../../shared/page-header/page-header.component';
+import { EmptyStateComponent } from '../../shared/empty-state/empty-state.component';
+import { RecentlyViewedService, RecentItem } from '../../core/services/recently-viewed.service';
+import { IconsModule } from '@progress/kendo-angular-icons';
+
+@Component({
+  selector: 'app-recently-viewed',
+  standalone: true,
+  imports: [CommonModule, RouterModule, PageHeaderComponent, EmptyStateComponent, IconsModule, DatePipe],
+  template: `
+    <app-page-header title="Recently Viewed" subtitle="Quickly access items you've checked recently."></app-page-header>
+    
+    <div class="recent-list" *ngIf="items.length > 0">
+       <a *ngFor="let item of items" [routerLink]="item.url" class="recent-row">
+          <kendo-icon [name]="getIcon(item.type)" class="item-icon"></kendo-icon>
+          <div class="item-content">
+             <div class="item-title">{{item.title}}</div>
+             <div class="item-meta">{{item.type}} • {{item.timestamp | date:'medium'}}</div>
+          </div>
+          <kendo-icon name="chevron-right" class="arrow"></kendo-icon>
+       </a>
+    </div>
+
+    <app-empty-state *ngIf="items.length === 0" icon="clock" title="No recent history" description="Items you view will automatically appear here."></app-empty-state>
+  `,
+  styles: [`
+    .recent-list { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; max-width: 800px; }
+    .recent-row { display: flex; align-items: center; padding: 16px; background: white; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: inherit; transition: all 0.15s; }
+    .recent-row:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .item-icon { font-size: 24px; color: #94a3b8; margin-right: 16px; margin-left: 8px; }
+    .item-content { flex: 1; }
+    .item-title { font-weight: 600; color: var(--text-color); margin-bottom: 4px; font-size: 0.95rem; }
+    .item-meta { font-size: 0.75rem; color: var(--muted-text-color); }
+    .arrow { color: #cbd5e1; font-size: 18px; }
+  `]
+})
+export class RecentlyViewedComponent implements OnInit {
+  rvSvc = inject(RecentlyViewedService); 
+  items: RecentItem[] = [];
+  ngOnInit() { this.items = this.rvSvc.get(); }
+  getIcon(type: string) {
+     if (type === 'Project') return 'folder';
+     if (type === 'Application') return 'grid-layout';
+     if (type === 'Process') return 'gear';
+     return 'parameter-header';
+  }
+}

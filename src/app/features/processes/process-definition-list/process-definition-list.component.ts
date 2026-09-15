@@ -18,7 +18,7 @@ import { process, State } from '@progress/kendo-data-query';
 @Component({
   selector: 'app-process-definition-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, GridModule, ButtonModule, InputsModule, DropDownsModule, DialogsModule, RouterModule, PageHeaderComponent, LoadingStateComponent, EmptyStateComponent, DatePipe],
+  imports: [CommonModule, FormsModule, GridModule, ButtonModule, InputsModule, DropDownsModule, DialogsModule, RouterModule, PageHeaderComponent, LoadingStateComponent, EmptyStateComponent],
   template: `
     <app-page-header title="Processes" subtitle="Define the operational processes tracked by your organization.">
       <button kendoButton themeColor="primary" icon="plus" (click)="openCreate()">New Process</button>
