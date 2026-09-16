@@ -1,17 +1,17 @@
 
-import { Component, OnInit, inject } from '@angular/core'; 
-import { CommonModule, DatePipe } from '@angular/common'; 
-import { ActivatedRoute, RouterModule } from '@angular/router'; 
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GridModule } from '@progress/kendo-angular-grid'; 
-import { ButtonModule } from '@progress/kendo-angular-buttons'; 
-import { IconsModule } from '@progress/kendo-angular-icons'; 
-import { DialogsModule } from '@progress/kendo-angular-dialog'; 
-import { InputsModule } from '@progress/kendo-angular-inputs'; 
-import { DropDownsModule } from '@progress/kendo-angular-dropdowns'; 
-import { LoadingStateComponent } from '../../../shared/loading-state/loading-state.component'; 
+import { GridModule } from '@progress/kendo-angular-grid';
+import { ButtonModule } from '@progress/kendo-angular-buttons';
+import { IconsModule } from '@progress/kendo-angular-icons';
+import { DialogsModule } from '@progress/kendo-angular-dialog';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { LoadingStateComponent } from '../../../shared/loading-state/loading-state.component';
 import { EmptyStateComponent } from '../../../shared/empty-state/empty-state.component';
-import { ProcessDefinitionService } from '../../../core/services/process-definition.service'; 
+import { ProcessDefinitionService } from '../../../core/services/process-definition.service';
 import { ProcessFieldService } from '../../../core/services/process-field.service';
 import { ProcessDefinitionProjectMappingService } from '../../../core/services/process-definition-project-mapping.service';
 import { ProjectService } from '../../../core/services/project.service';
@@ -21,10 +21,10 @@ import { catchError } from 'rxjs/operators';
 import { process as kendoProcess, State } from '@progress/kendo-data-query';
 
 @Component({
-  selector: 'app-process-definition-detail',
-  standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, GridModule, ButtonModule, IconsModule, DialogsModule, InputsModule, DropDownsModule, LoadingStateComponent, EmptyStateComponent],
-  template: `
+   selector: 'app-process-definition-detail',
+   standalone: true,
+   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, GridModule, ButtonModule, IconsModule, DialogsModule, InputsModule, DropDownsModule, LoadingStateComponent, EmptyStateComponent],
+   template: `
     <div class="breadcrumb mb-4">
        <a routerLink="/processes">Processes</a>
        <kendo-icon name="chevron-right" class="mx-2"></kendo-icon>
@@ -67,13 +67,15 @@ import { process as kendoProcess, State } from '@progress/kendo-data-query';
                   </kendo-grid-column>
                   <kendo-grid-column title="Required" [width]="100">
                      <ng-template kendoGridCellTemplate let-dataItem>
-                         <kendo-icon name="check" *ngIf="dataItem.isRequired" style="color: #10b981;"></kendo-icon>
+                         <span [style.color]="dataItem.isRequired ? '#10b981' : 'var(--muted-text-color)'" style="font-weight: 500;">
+                             {{dataItem.isRequired ? 'Yes' : 'No'}}
+                         </span>
                      </ng-template>
                   </kendo-grid-column>
                   <kendo-grid-column title="Actions" [width]="180">
                      <ng-template kendoGridCellTemplate let-dataItem>
-                        <button kendoButton  fillMode="flat" (click)="openFieldEdit(dataItem)" themeColor="primary">Edit</button>
-                        <button kendoButton  fillMode="flat" themeColor="error">Delete</button>
+                        <button kendoButton fillMode="flat" (click)="openFieldEdit(dataItem)" themeColor="primary">Edit</button>
+                        <button kendoButton fillMode="flat" themeColor="error" (click)="confirmFieldDelete(dataItem)">Delete</button>
                      </ng-template>
                   </kendo-grid-column>
                </kendo-grid>
@@ -166,7 +168,7 @@ import { process as kendoProcess, State } from '@progress/kendo-data-query';
         </kendo-dialog-actions>
     </kendo-dialog>
   `,
-  styles: [`
+   styles: [`
     .mb-4 { margin-bottom: 16px; } .mx-2 { margin: 0 8px; } .mt-2 { margin-top: 8px; } .p-3 { padding: 12px; }
     .breadcrumb { display: flex; align-items: center; font-size: 0.875rem; color: var(--muted-text-color); }
     .breadcrumb a { color: var(--primary-color); }
@@ -198,113 +200,118 @@ import { process as kendoProcess, State } from '@progress/kendo-data-query';
   `]
 })
 export class ProcessDefinitionDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute); private svc = inject(ProcessDefinitionService); private fieldSvc = inject(ProcessFieldService); private mapSvc = inject(ProcessDefinitionProjectMappingService); private projSvc = inject(ProjectService); private ns = inject(NotificationService); private fb = inject(FormBuilder);
-  
-  loading = true; processId: string | null = null; process: any;
-  fields: any[] = []; fieldsData: any[] = [];
-  projectMappings: any[] = []; allProjects: any[] = []; unmappedProjects: any[] = [];
-  
-  fieldTypes = [ {text: 'Text', value: 0}, {text: 'Number', value: 1}, {text: 'Decimal', value: 2}, {text: 'Boolean', value: 3}, {text: 'Date', value: 4}, {text: 'Date & Time', value: 5}, {text: 'Select', value: 6}, {text: 'Url', value: 7} ];
+   private route = inject(ActivatedRoute); private svc = inject(ProcessDefinitionService); private fieldSvc = inject(ProcessFieldService); private mapSvc = inject(ProcessDefinitionProjectMappingService); private projSvc = inject(ProjectService); private ns = inject(NotificationService); private fb = inject(FormBuilder);
 
-  isFieldEditorOpen = false; fieldForm!: FormGroup; saving = false; editingFieldId: string | null = null;
-  fieldToDelete: any = null;
+   loading = true; processId: string | null = null; process: any;
+   fields: any[] = []; fieldsData: any[] = [];
+   projectMappings: any[] = []; allProjects: any[] = []; unmappedProjects: any[] = [];
 
-  showMapProject = false; projectToMap: string | null = null;
+   fieldTypes = [{ text: 'Text', value: 0 }, { text: 'Number', value: 1 }, { text: 'Decimal', value: 2 }, { text: 'Boolean', value: 3 }, { text: 'Date', value: 4 }, { text: 'Date & Time', value: 5 }, { text: 'Select', value: 6 }, { text: 'Url', value: 7 }];
 
-  ngOnInit() {
-    this.processId = this.route.snapshot.paramMap.get('id');
-    if (this.processId) this.loadData();
-  }
+   isFieldEditorOpen = false; fieldForm!: FormGroup; saving = false; editingFieldId: string | null = null;
+   fieldToDelete: any = null;
 
-  loadData() {
-    this.loading = true;
-    forkJoin({
-      process: this.svc.getProcessDefinition(this.processId!),
-      fields: this.fieldSvc.getProcessFields(this.processId!).pipe(catchError(()=>of([]))),
-      mappings: this.mapSvc.getByProcessDefinition(this.processId!).pipe(catchError(()=>of([]))),
-      projects: this.projSvc.getProjects().pipe(catchError(()=>of([])))
-    }).subscribe(data => {
-      this.process = data.process;
-      this.fields = data.fields;
-      this.fieldsData = [...this.fields].sort((a,b)=>a.sortOrder - b.sortOrder);
-      this.projectMappings = data.mappings;
-      this.allProjects = data.projects;
-      this.updateUnmappedProjects();
-      this.loading = false;
-    });
-  }
+   showMapProject = false; projectToMap: string | null = null;
 
-  updateUnmappedProjects() {
-    const mappedIds = this.projectMappings.map(m => m.projectId);
-    this.unmappedProjects = this.allProjects.filter(p => !mappedIds.includes(p.id));
-  }
+   ngOnInit() {
+      this.processId = this.route.snapshot.paramMap.get('id');
+      if (this.processId) this.loadData();
+   }
 
-  getFieldTypeName(v: number) { return this.fieldTypes.find(t => t.value === v)?.text || 'Unknown'; }
-  getProjectName(id: string) { return this.allProjects.find(p => p.id === id)?.name || id; }
+   loadData() {
+      this.loading = true;
+      forkJoin({
+         process: this.svc.getProcessDefinition(this.processId!),
+         fields: this.fieldSvc.getProcessFields(this.processId!).pipe(catchError(() => of([]))),
+         mappings: this.mapSvc.getByProcessDefinition(this.processId!).pipe(catchError(() => of([]))),
+         projects: this.projSvc.getProjects().pipe(catchError(() => of([])))
+      }).subscribe(data => {
+         this.process = data.process;
+         this.fields = data.fields.map((f: any) => ({ ...f, isRequired: f.required !== undefined ? f.required : f.isRequired }));
+         this.fieldsData = [...this.fields].sort((a, b) => a.sortOrder - b.sortOrder);
+         this.projectMappings = data.mappings;
+         this.allProjects = data.projects;
+         this.updateUnmappedProjects();
+         this.loading = false;
+      });
+   }
 
-  openProcessEdit() { this.ns.success('Process config edit omitted for brevity. Using backend updates directly.'); }
+   updateUnmappedProjects() {
+      const mappedIds = this.projectMappings.map(m => m.projectId);
+      this.unmappedProjects = this.allProjects.filter(p => !mappedIds.includes(p.id));
+   }
 
-  openFieldCreate() {
-     this.editingFieldId = null;
-     this.initFieldForm(null);
-     this.isFieldEditorOpen = true;
-  }
-  openFieldEdit(field: any) {
-     this.editingFieldId = field.id;
-     this.initFieldForm(field);
-     this.isFieldEditorOpen = true;
-  }
-  initFieldForm(field: any) {
-     this.fieldForm = this.fb.group({
-        fieldName: [field?.fieldName || '', [Validators.required, Validators.maxLength(50)]],
-        label: [field?.label || '', [Validators.required, Validators.maxLength(100)]],
-        fieldType: [field?.fieldType ?? 0, Validators.required],
-        sortOrder: [field?.sortOrder ?? (this.fields.length * 10), Validators.required],
-        isRequired: [field?.isRequired ?? false],
-        isActive: [field?.isActive ?? true],
-        placeholder: [field?.placeholder || ''],
-        defaultValue: [field?.defaultValue || ''],
-        optionsJson: [field?.optionsJson || '']
-     });
-  }
-  closeFieldEditor() { this.isFieldEditorOpen = false; }
-  saveField() {
-     if (this.fieldForm.invalid) return;
-     this.saving = true;
-     const payload = { ...this.fieldForm.value, processDefinitionId: this.processId };
-     
-     if (this.editingFieldId) {
-        this.fieldSvc.updateProcessField(this.editingFieldId, payload).subscribe({
-           next: () => { this.ns.success('Field updated.'); this.loadData(); this.closeFieldEditor(); this.saving = false; },
-           error: () => { this.ns.error('Failed to update field.'); this.saving = false; }
-        });
-     } else {
-        this.fieldSvc.createProcessField(payload).subscribe({
-           next: () => { this.ns.success('Field created.'); this.loadData(); this.closeFieldEditor(); this.saving = false; },
-           error: () => { this.ns.error('Failed to create field.'); this.saving = false; }
-        });
-     }
-  }
+   getFieldTypeName(v: number) { return this.fieldTypes.find(t => t.value === v)?.text || 'Unknown'; }
+   getProjectName(id: string) { return this.allProjects.find(p => p.id === id)?.name || id; }
 
-  confirmFieldDelete(f: any) { this.fieldToDelete = f; }
-  deleteField() {
-     this.fieldSvc.deleteProcessField(this.fieldToDelete.id).subscribe({
-        next: () => { this.ns.success('Field deleted'); this.fieldToDelete = null; this.loadData(); },
-        error: () => { this.ns.error('Failed to delete field'); this.fieldToDelete = null; }
-     });
-  }
+   openProcessEdit() { this.ns.success('Process config edit omitted for brevity. Using backend updates directly.'); }
 
-  mapProject() {
-     if (!this.projectToMap) return;
-     this.mapSvc.createMapping({ processDefinitionId: this.processId!, projectId: this.projectToMap }).subscribe({
-        next: () => { this.ns.success('Project mapped.'); this.showMapProject = false; this.projectToMap = null; this.loadData(); },
-        error: () => { this.ns.error('Failed mapping'); }
-     });
-  }
-  unmapProject(projectId: string) {
-     this.mapSvc.deleteMapping(this.processId!, projectId).subscribe({
-        next: () => { this.ns.success('Mapping removed.'); this.loadData(); },
-        error: () => { this.ns.error('Failed removing mapping'); }
-     });
-  }
+   openFieldCreate() {
+      this.editingFieldId = null;
+      this.initFieldForm(null);
+      this.isFieldEditorOpen = true;
+   }
+   openFieldEdit(field: any) {
+      this.editingFieldId = field.id;
+      this.initFieldForm(field);
+      this.isFieldEditorOpen = true;
+   }
+   initFieldForm(field: any) {
+      this.fieldForm = this.fb.group({
+         fieldName: [field?.fieldName || '', [Validators.required, Validators.maxLength(50)]],
+         label: [field?.label || '', [Validators.required, Validators.maxLength(100)]],
+         fieldType: [field?.fieldType ?? 0, Validators.required],
+         sortOrder: [field?.sortOrder ?? (this.fields.length * 10), Validators.required],
+         isRequired: [field?.isRequired ?? field?.required ?? false],
+         isActive: [field?.isActive ?? true],
+         placeholder: [field?.placeholder || ''],
+         defaultValue: [field?.defaultValue || ''],
+         optionsJson: [field?.optionsJson || '']
+      });
+   }
+   closeFieldEditor() { this.isFieldEditorOpen = false; }
+   saveField() {
+      if (this.fieldForm.invalid) return;
+      this.saving = true;
+      // Map our internal isRequired to the backend required property
+      const payload = {
+         ...this.fieldForm.value,
+         processDefinitionId: this.processId,
+         required: this.fieldForm.value.isRequired
+      };
+
+      if (this.editingFieldId) {
+         this.fieldSvc.updateProcessField(this.editingFieldId, payload).subscribe({
+            next: () => { this.ns.success('Field updated.'); this.loadData(); this.closeFieldEditor(); this.saving = false; },
+            error: () => { this.ns.error('Failed to update field.'); this.saving = false; }
+         });
+      } else {
+         this.fieldSvc.createProcessField(payload).subscribe({
+            next: () => { this.ns.success('Field created.'); this.loadData(); this.closeFieldEditor(); this.saving = false; },
+            error: () => { this.ns.error('Failed to create field.'); this.saving = false; }
+         });
+      }
+   }
+
+   confirmFieldDelete(f: any) { this.fieldToDelete = f; }
+   deleteField() {
+      this.fieldSvc.deleteProcessField(this.fieldToDelete.id).subscribe({
+         next: () => { this.ns.success('Field deleted'); this.fieldToDelete = null; this.loadData(); },
+         error: () => { this.ns.error('Failed to delete field'); this.fieldToDelete = null; }
+      });
+   }
+
+   mapProject() {
+      if (!this.projectToMap) return;
+      this.mapSvc.createMapping({ processDefinitionId: this.processId!, projectId: this.projectToMap }).subscribe({
+         next: () => { this.ns.success('Project mapped.'); this.showMapProject = false; this.projectToMap = null; this.loadData(); },
+         error: () => { this.ns.error('Failed mapping'); }
+      });
+   }
+   unmapProject(projectId: string) {
+      this.mapSvc.deleteMapping(this.processId!, projectId).subscribe({
+         next: () => { this.ns.success('Mapping removed.'); this.loadData(); },
+         error: () => { this.ns.error('Failed removing mapping'); }
+      });
+   }
 }
