@@ -43,8 +43,7 @@ import { process as kendoProcess, State } from '@progress/kendo-data-query';
             <div class="ref-number monospaced">{{process.formCode || process.processCode}} &nbsp;&middot;&nbsp; {{process.description}}</div>
          </div>
          <div class="header-actions">
-            <button kendoButton icon="pencil" (click)="openProcessEdit()">Edit Process</button>
-            <button kendoButton icon="folder-open" fillMode="flat">Map Projects</button>
+            <button kendoButton icon="folder-open" fillMode="flat" (click)="showMapProject = !showMapProject">Map Projects</button>
          </div>
       </div>
 
@@ -243,8 +242,6 @@ export class ProcessDefinitionDetailComponent implements OnInit {
 
    getFieldTypeName(v: number) { return this.fieldTypes.find(t => t.value === v)?.text || 'Unknown'; }
    getProjectName(id: string) { return this.allProjects.find(p => p.id === id)?.name || id; }
-
-   openProcessEdit() { this.ns.success('Process config edit omitted for brevity. Using backend updates directly.'); }
 
    openFieldCreate() {
       this.editingFieldId = null;
