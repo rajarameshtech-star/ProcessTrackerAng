@@ -18,6 +18,10 @@ export class ApplicationService {
     return this.http.get<Application>(`${this.apiUrl}/${id}`);
   }
 
+  createApplication(app: any): Observable<Application> {
+    return this.http.post<Application>(this.apiUrl, app);
+  }
+
   updateApplication(id: string, app: any): Observable<Application> {
     return this.http.put<Application>(`${this.apiUrl}/${id}`, app);
   }
