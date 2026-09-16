@@ -32,7 +32,7 @@ import { catchError } from 'rxjs/operators';
     <div class="toolbar" *ngIf="!loading"> 
       <kendo-textbox placeholder="Search service items..." [style.width.px]="250" [(ngModel)]="searchTerm" (valueChange)="applyFilters()"></kendo-textbox>
       <kendo-dropdownlist [data]="applications" textField="name" valueField="id" [valuePrimitive]="true" [defaultItem]="{name: 'All applications', id: null}" [(ngModel)]="selectedAppId" (valueChange)="onAppChanged($event)"></kendo-dropdownlist>
-      <kendo-dropdownlist [data]="processes" textField="name" valueField="id" [valuePrimitive]="true" [defaultItem]="{name: 'All processes', id: null}" [(ngModel)]="selectedProcessId" (valueChange)="applyFilters()"></kendo-dropdownlist>
+      <kendo-dropdownlist [data]="processes" textField="processName" valueField="id" [valuePrimitive]="true" [defaultItem]="{processName: 'All processes', id: null}" [(ngModel)]="selectedProcessId" (valueChange)="applyFilters()"></kendo-dropdownlist>
       <kendo-dropdownlist [data]="statuses" [defaultItem]="'All statuses'" [(ngModel)]="selectedStatus" (valueChange)="applyFilters()"></kendo-dropdownlist>
       <kendo-dropdownlist [data]="priorities" [defaultItem]="'All priorities'" [(ngModel)]="selectedPriority" (valueChange)="applyFilters()"></kendo-dropdownlist>
       <button kendoButton fillMode="flat" (click)="clearFilters()">Clear filters</button>
@@ -165,7 +165,7 @@ export class ServiceItemListComponent implements OnInit {
       this.applications = data.apps;
       this.processes = data.processes;
       this.applications.forEach(a => this.appMap[a.id] = a.name);
-      this.processes.forEach(p => this.processMap[p.id] = p.processName || p.name);
+      this.processes.forEach(p => this.processMap[p.id] = p.processName);
       this.allItems = data.items;
       this.applyFilters();
       this.loading = false;

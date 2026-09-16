@@ -72,12 +72,12 @@ import { ApplicationInlineViewComponent } from '../../../shared/application-inli
                <p class="muted-text mb-4" style="font-size:0.8rem; margin-top:0;">These templates are allowed within this project workspace.</p>
                
                <div class="prop-list">
-                  <div class="prop-item" *ngFor="let proc of mappedProcesses">
-                     <span class="prop-value" style="font-weight: 500;">
-                        <kendo-icon name="gear" style="margin-right: 8px; color: var(--muted-text-color)"></kendo-icon>
-                        <a [routerLink]="['/processes', proc.id]" class="link">{{proc.name}}</a>
-                     </span>
-                  </div>
+                   <div class="prop-item" *ngFor="let proc of mappedProcesses">
+                      <span class="prop-value" style="font-weight: 500;">
+                         <kendo-icon name="gear" style="margin-right: 8px; color: var(--muted-text-color)"></kendo-icon>
+                         <a [routerLink]="['/processes', proc.id]" class="link">{{proc.processName || 'Unnamed Process'}}</a>
+                      </span>
+                   </div>
                   <div *ngIf="mappedProcesses.length === 0" class="muted-text text-center" style="font-size: 0.8rem; padding: 12px 0;">
                      No processes mapped. <br> Map via <a routerLink="/processes">Process definitions</a>.
                   </div>

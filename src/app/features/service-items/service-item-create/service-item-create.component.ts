@@ -32,7 +32,7 @@ import { ProcessDefinitionProjectMappingService } from '../../../core/services/p
           </div>
           <div>
              <label>Process</label>
-             <kendo-dropdownlist formControlName="processDefinitionId" [data]="filteredProcesses" textField="name" valueField="id" [valuePrimitive]="true" [disabled]="!form.get('applicationId')?.value || loadingProcesses" (valueChange)="onProcessChange($event)"></kendo-dropdownlist>
+             <kendo-dropdownlist formControlName="processDefinitionId" [data]="filteredProcesses" textField="processName" valueField="id" [valuePrimitive]="true" [disabled]="!form.get('applicationId')?.value || loadingProcesses" (valueChange)="onProcessChange($event)"></kendo-dropdownlist>
           </div>
         </div>
         <div class="form-row">

@@ -28,7 +28,7 @@ import { process as kendoProcess, State } from '@progress/kendo-data-query';
     <div class="breadcrumb mb-4">
        <a routerLink="/processes">Processes</a>
        <kendo-icon name="chevron-right" class="mx-2"></kendo-icon>
-       <span>{{ process?.name || 'Loading...' }}</span>
+       <span>{{ process?.processName || 'Loading...' }}</span>
     </div>
 
     <app-loading-state *ngIf="loading"></app-loading-state>
@@ -37,7 +37,7 @@ import { process as kendoProcess, State } from '@progress/kendo-data-query';
       <div class="header-section">
          <div style="flex: 1;">
             <div class="title-row">
-               <h1 class="main-title">{{process.name}}</h1>
+               <h1 class="main-title">{{process.processName}}</h1>
                <span class="active-pill" [class.inactive]="!process.active">{{process.active ? 'Active' : 'Inactive'}}</span>
             </div>
             <div class="ref-number monospaced">{{process.formCode || process.processCode}} &nbsp;&middot;&nbsp; {{process.description}}</div>

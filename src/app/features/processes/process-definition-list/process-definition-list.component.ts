@@ -38,9 +38,9 @@ import { process, State } from '@progress/kendo-data-query';
              <a class="ref-link monospaced" [routerLink]="['/processes', dataItem.id]">{{dataItem.processCode || dataItem.formCode}}</a>
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column field="name" title="Process Name" [width]="250">
+        <kendo-grid-column field="processName" title="Process Name" [width]="250">
            <ng-template kendoGridCellTemplate let-dataItem>
-             <span style="font-weight: 500; color: var(--text-color);">{{dataItem.name || 'Unnamed Process'}}</span>
+             <span style="font-weight: 500; color: var(--text-color);">{{dataItem.processName || 'Unnamed Process'}}</span>
            </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="description" title="Description"></kendo-grid-column>
@@ -69,7 +69,7 @@ import { process, State } from '@progress/kendo-data-query';
          </div>
          <div class="form-row">
             <label>Process Name</label>
-            <kendo-textbox [(ngModel)]="creation.name"></kendo-textbox>
+            <kendo-textbox [(ngModel)]="creation.processName"></kendo-textbox>
          </div>
          <div class="form-row">
             <label>Description</label>
@@ -78,13 +78,13 @@ import { process, State } from '@progress/kendo-data-query';
       </div>
       <kendo-dialog-actions>
          <button kendoButton (click)="closeCreate()" [disabled]="saving">Cancel</button>
-         <button kendoButton themeColor="primary" (click)="saveCreate()" [disabled]="!creation.name || !creation.processCode || saving">Create</button>
+         <button kendoButton themeColor="primary" (click)="saveCreate()" [disabled]="!creation.processName || !creation.processCode || saving">Create</button>
       </kendo-dialog-actions>
     </kendo-dialog>
 
     <kendo-dialog *ngIf="itemToDelete" title="Delete Process?" (close)="cancelDelete()" [minWidth]="300">
         <p>This action cannot be undone and will affect all related Service Items.</p>
-        <p style="font-weight: 500; margin-top: 16px;">{{itemToDelete.processCode || itemToDelete.formCode}}<br>{{itemToDelete.name}}</p>
+        <p style="font-weight: 500; margin-top: 16px;">{{itemToDelete.processCode || itemToDelete.formCode}}<br>{{itemToDelete.processName}}</p>
         <kendo-dialog-actions>
             <button kendoButton (click)="cancelDelete()">Cancel</button>
             <button kendoButton themeColor="primary" (click)="deleteItem()">Delete</button>
@@ -106,7 +106,7 @@ export class ProcessDefinitionListComponent implements OnInit {
   state: State = { skip: 0, take: 50, sort: [] };
   searchTerm = ''; activeFilter: boolean | null = null;
   showCreate = false; itemToDelete: any = null; saving = false;
-  creation: any = { processCode: '', name: '', description: '', active: true, formCode: '' };
+  creation: any = { processCode: '', processName: '', description: '', active: true, formCode: '' };
 
   ngOnInit() { this.refreshData(); }
 
@@ -122,7 +122,7 @@ export class ProcessDefinitionListComponent implements OnInit {
     let result = this.allItems;
     if (this.searchTerm) {
       const t = this.searchTerm.toLowerCase();
-      result = result.filter(i => (i.name && i.name.toLowerCase().includes(t)) || (i.processCode && i.processCode.toLowerCase().includes(t)));
+      result = result.filter(i => (i.processName && i.processName.toLowerCase().includes(t)) || (i.processCode && i.processCode.toLowerCase().includes(t)));
     }
     if (this.activeFilter !== null) result = result.filter(i => i.active === this.activeFilter);
     this.filteredItems = result; this.loadGridData();
@@ -131,7 +131,7 @@ export class ProcessDefinitionListComponent implements OnInit {
   loadGridData() { this.gridView = process(this.filteredItems, this.state); }
   dataStateChange(state: State) { this.state = state; this.loadGridData(); }
 
-  openCreate() { this.showCreate = true; this.creation = { processCode: '', name: '', description: '', active: true }; }
+  openCreate() { this.showCreate = true; this.creation = { processCode: '', processName: '', description: '', active: true }; }
   closeCreate() { this.showCreate = false; }
   saveCreate() {
     this.saving = true;

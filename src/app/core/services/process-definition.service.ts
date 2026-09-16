@@ -11,12 +11,10 @@ export class ProcessDefinitionService {
   private apiUrl = `${environment.apiBaseUrl}/ProcessDefinitions`;
 
   getProcessDefinitions(): Observable<ProcessDefinition[]> {
-    return this.http.get<ProcessDefinition[]>(this.apiUrl)
-      .pipe(map((res: any[]) => res.map(p => ({ ...p, name: p.processName || p.name }))));
+    return this.http.get<ProcessDefinition[]>(this.apiUrl);
   }
   getProcessDefinition(id: string): Observable<ProcessDefinition> {
-    return this.http.get<ProcessDefinition>(`${this.apiUrl}/${id}`)
-      .pipe(map((p: any) => ({ ...p, name: p.processName || p.name })));
+    return this.http.get<ProcessDefinition>(`${this.apiUrl}/${id}`);
   }
   createProcessDefinition(pd: Partial<ProcessDefinition>): Observable<ProcessDefinition> { return this.http.post<ProcessDefinition>(this.apiUrl, pd); }
   updateProcessDefinition(id: string, pd: Partial<ProcessDefinition>): Observable<ProcessDefinition> { return this.http.put<ProcessDefinition>(`${this.apiUrl}/${id}`, pd); }
