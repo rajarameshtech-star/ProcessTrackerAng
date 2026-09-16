@@ -87,10 +87,10 @@ import { catchError } from 'rxjs/operators';
              <span class="muted-text">{{dataItem.updatedAt | date:'mediumDate'}}</span>
            </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column title="Actions" [width]="160" [sortable]="false">
+        <kendo-grid-column title="Actions" [width]="200" [sortable]="false">
           <ng-template kendoGridCellTemplate let-dataItem>
-             <button kendoButton icon="folder-open" fillMode="flat" title="Open" [routerLink]="['/service-items', dataItem.id]"></button>
-             <button kendoButton  fillMode="flat" themeColor="error">Delete</button>
+             <button kendoButton icon="folder-open" fillMode="flat" themeColor="primary" title="Open" [routerLink]="['/service-items', dataItem.id]">Open</button>
+             <button kendoButton  fillMode="flat" themeColor="error" (click)="confirmDelete(dataItem)">Delete</button>
           </ng-template>
         </kendo-grid-column>
       </kendo-grid> 
