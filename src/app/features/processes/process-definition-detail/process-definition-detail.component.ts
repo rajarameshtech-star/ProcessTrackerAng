@@ -273,14 +273,17 @@ export class ProcessDefinitionDetailComponent implements OnInit {
    saveField() {
       if (this.fieldForm.invalid) return;
       this.saving = true;
-      // Map our internal isRequired to the backend required property
-      const payload = {
+      const baseObj = this.editingFieldId ? this.fields.find(f => f.id === this.editingFieldId) || {} : { id: 0 };
+
+      const payload: any = {
+         ...baseObj,
          ...this.fieldForm.value,
-         processDefinitionId: this.processId,
+         processDefinitionId: Number(this.processId),
          required: this.fieldForm.value.isRequired
       };
 
       if (this.editingFieldId) {
+         payload.id = Number(this.editingFieldId);
          this.fieldSvc.updateProcessField(this.editingFieldId, payload).subscribe({
             next: () => { this.ns.success('Field updated.'); this.loadData(); this.closeFieldEditor(); this.saving = false; },
             error: () => { this.ns.error('Failed to update field.'); this.saving = false; }
