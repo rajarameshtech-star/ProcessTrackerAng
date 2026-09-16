@@ -165,7 +165,7 @@ export class ServiceItemListComponent implements OnInit {
       this.applications = data.apps;
       this.processes = data.processes;
       this.applications.forEach(a => this.appMap[a.id] = a.name);
-      this.processes.forEach(p => this.processMap[p.id] = p.name);
+      this.processes.forEach(p => this.processMap[p.id] = p.processName || p.name);
       this.allItems = data.items;
       this.applyFilters();
       this.loading = false;
