@@ -38,17 +38,21 @@ import { process, State } from '@progress/kendo-data-query';
              <a class="ref-link monospaced" [routerLink]="['/processes', dataItem.id]">{{dataItem.processCode || dataItem.formCode}}</a>
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column field="name" title="Process Name" [width]="250"></kendo-grid-column>
+        <kendo-grid-column field="name" title="Process Name" [width]="250">
+           <ng-template kendoGridCellTemplate let-dataItem>
+             <span style="font-weight: 500; color: var(--text-color);">{{dataItem.name || 'Unnamed Process'}}</span>
+           </ng-template>
+        </kendo-grid-column>
         <kendo-grid-column field="description" title="Description"></kendo-grid-column>
         <kendo-grid-column title="Status" [width]="100">
            <ng-template kendoGridCellTemplate let-dataItem>
              <span class="active-pill" [class.inactive]="!dataItem.active">{{dataItem.active ? 'Active' : 'Inactive'}}</span>
            </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column title="Actions" [width]="160" [sortable]="false">
+        <kendo-grid-column title="Actions" [width]="200" [sortable]="false">
           <ng-template kendoGridCellTemplate let-dataItem>
-            <button kendoButton icon="folder-open" fillMode="flat" title="Open" [routerLink]="['/processes', dataItem.id]"></button>
-            <button kendoButton  fillMode="flat" themeColor="error">Delete</button>
+            <button kendoButton fillMode="flat" themeColor="primary" [routerLink]="['/processes', dataItem.id]">Open</button>
+            <button kendoButton fillMode="flat" themeColor="error">Delete</button>
           </ng-template>
         </kendo-grid-column>
       </kendo-grid>
