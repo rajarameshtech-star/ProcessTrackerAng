@@ -42,7 +42,7 @@ import { ApplicationInlineViewComponent } from '../../../shared/application-inli
             <div class="ref-number">{{project.description || 'No description provided'}}</div>
          </div>
          <div class="header-actions">
-            <button kendoButton themeColor="primary" icon="plus" (click)="router.navigate(['/applications/create'], {queryParams: {projectId: project.id}})">New Application</button>
+            <button kendoButton themeColor="primary" icon="plus" (click)="openAppCreate()">New Application</button>
             <button kendoButton (click)="openEdit()">Edit Project</button>
          </div>
       </div>
@@ -63,7 +63,7 @@ import { ApplicationInlineViewComponent } from '../../../shared/application-inli
             
             <app-application-inline-view *ngIf="selectedAppId" [appId]="selectedAppId"></app-application-inline-view>
             
-            <app-empty-state *ngIf="applications.length === 0" icon="grid-layout" title="No applications found" description="Create an application to organize your operational workspace under this project." actionLabel="Create Application" (action)="null"></app-empty-state>
+            <app-empty-state *ngIf="applications.length === 0" icon="grid-layout" title="No applications found" description="Create an application to organize your operational workspace under this project." actionLabel="Create Application" (action)="openAppCreate()"></app-empty-state>
          </div>
          
          <div class="properties-col">
@@ -99,6 +99,23 @@ import { ApplicationInlineViewComponent } from '../../../shared/application-inli
       <kendo-dialog-actions>
          <button kendoButton (click)="closeEdit()" [disabled]="saving">Cancel</button>
          <button kendoButton themeColor="primary" (click)="saveEdit()" [disabled]="editForm.invalid || saving">Save Changes</button>
+      </kendo-dialog-actions>
+    </kendo-dialog>
+
+    <kendo-dialog *ngIf="showAppCreate" title="New Application" (close)="closeAppCreate()" [width]="500">
+      <form [formGroup]="appCreateForm" (ngSubmit)="saveAppCreate()" class="pt-form">
+         <div class="form-row">
+            <label>Application Name</label>
+            <kendo-textbox formControlName="name"></kendo-textbox>
+         </div>
+         <div class="form-row">
+            <label>Description</label>
+            <textarea kendoTextArea formControlName="description"></textarea>
+         </div>
+      </form>
+      <kendo-dialog-actions>
+         <button kendoButton (click)="closeAppCreate()" [disabled]="appSaving">Cancel</button>
+         <button kendoButton themeColor="primary" (click)="saveAppCreate()" [disabled]="appCreateForm.invalid || appSaving">Create</button>
       </kendo-dialog-actions>
     </kendo-dialog>
   `,
@@ -139,6 +156,7 @@ export class ProjectDetailComponent implements OnInit {
    applications: any[] = []; mappedProcesses: any[] = [];
    selectedAppId: string | number | null = null;
    editForm!: FormGroup; isEditing = false; saving = false;
+   showAppCreate = false; appSaving = false; appCreateForm!: FormGroup;
 
    ngOnInit() {
       this.projectId = this.route.snapshot.paramMap.get('id');
@@ -174,6 +192,34 @@ export class ProjectDetailComponent implements OnInit {
       this.svc.updateProject(this.projectId!, this.editForm.value).subscribe({
          next: () => { this.ns.success('Project updated.'); this.project = { ...this.project, ...this.editForm.value }; this.isEditing = false; this.saving = false; },
          error: () => { this.ns.error('Failed to update.'); this.saving = false; }
+      });
+   }
+
+   openAppCreate() {
+      this.appCreateForm = this.fb.group({
+         name: ['', Validators.required],
+         description: [''],
+         projectId: [Number(this.projectId), Validators.required]
+      });
+      this.showAppCreate = true;
+   }
+
+   closeAppCreate() { this.showAppCreate = false; }
+
+   saveAppCreate() {
+      if (this.appCreateForm.invalid) return;
+      this.appSaving = true;
+      this.appSvc.createApplication(this.appCreateForm.value).subscribe({
+         next: () => {
+            this.ns.success('Application created.');
+            this.showAppCreate = false;
+            this.appSaving = false;
+            this.loadFull();
+         },
+         error: () => {
+            this.ns.error('Failed to create application.');
+            this.appSaving = false;
+         }
       });
    }
 }
