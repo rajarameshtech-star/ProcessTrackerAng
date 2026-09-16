@@ -1,10 +1,9 @@
-
-import { Component, OnInit, inject } from '@angular/core'; 
+import { Component, OnInit, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { ButtonModule } from '@progress/kendo-angular-buttons'; 
-import { IconsModule } from '@progress/kendo-angular-icons'; 
+import { ButtonModule } from '@progress/kendo-angular-buttons';
+import { IconsModule } from '@progress/kendo-angular-icons';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
 import { ServiceItemService } from '../../core/services/service-item.service';
@@ -12,22 +11,25 @@ import { ProjectService } from '../../core/services/project.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-@Component({ 
-  selector: 'app-topbar', 
-  standalone: true, 
-  imports: [CommonModule, RouterModule, FormsModule, ButtonModule, IconsModule, InputsModule, DialogsModule], 
-  template: `
+@Component({
+   selector: 'app-topbar',
+   standalone: true,
+   imports: [CommonModule, RouterModule, FormsModule, ButtonModule, IconsModule, InputsModule, DialogsModule],
+   template: `
     <header class="topbar"> 
-      <div class="search-container" (click)="openSearch()"> 
-         <kendo-icon name="search"></kendo-icon>
-         <span class="placeholder">Search projects, items, processes...</span>
-         <span class="shortcut">Ctrl+K</span>
-      </div> 
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <button kendoButton fillMode="flat" icon="menu" (click)="toggleSidebar.emit()"></button>
+        <div class="search-container" (click)="openSearch()"> 
+           <kendo-icon name="search"></kendo-icon>
+           <span class="placeholder">Search projects, items, processes...</span>
+           <span class="shortcut">Ctrl+K</span>
+        </div> 
+      </div>
       <div class="actions"> 
         <button kendoButton title="Notifications" icon="bell" fillMode="flat" rounded="full"></button> 
         <div class="avatar">U</div> 
       </div> 
-    </header> 
+    </header>
 
     <kendo-dialog *ngIf="isSearchOpen" [title]="'Global Search'" (close)="closeSearch()" [width]="600">
        <div class="global-search-content">
@@ -56,8 +58,8 @@ import { catchError } from 'rxjs/operators';
           <div class="hint" *ngIf="!searchTerm">Search by project names, service item references or titles.</div>
        </div>
     </kendo-dialog>
-  `, 
-  styles: [` 
+  `,
+   styles: [` 
     .topbar { height: 60px; background: white; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; } 
     .search-container { display: flex; align-items: center; background: #f1f5f9; padding: 8px 16px; border-radius: 20px; width: 400px; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; } 
     .search-container:hover { border-color: #cbd5e1; background: #e2e8f0; }
@@ -77,32 +79,33 @@ import { catchError } from 'rxjs/operators';
     .result-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; text-decoration: none; color: var(--text-color); font-size: 0.875rem; cursor: pointer; transition: background 0.1s; }
     .result-item:hover { background: #f8fafc; }
     .result-item kendo-icon { color: #94a3b8; }
-  `] 
-}) 
+  `]
+})
 export class TopbarComponent {
+   @Output() toggleSidebar = new EventEmitter<void>();
    private router = inject(Router); private projSvc = inject(ProjectService); private itemSvc = inject(ServiceItemService);
    isSearchOpen = false; searchTerm = ''; loading = false;
    projects: any[] = []; items: any[] = []; results: any[] = [];
-   
+
    openSearch() { this.isSearchOpen = true; this.searchTerm = ''; this.results = []; this.projects = []; this.items = []; }
    closeSearch() { this.isSearchOpen = false; }
-   
+
    onSearch() {
-      if (!this.searchTerm || this.searchTerm.length < 2) { this.results=[]; return; }
+      if (!this.searchTerm || this.searchTerm.length < 2) { this.results = []; return; }
       this.loading = true;
       const term = this.searchTerm.toLowerCase();
       // Light-weight local cross-search implementation for UI polish
       forkJoin({
-         p: this.projSvc.getProjects().pipe(catchError(()=>of([]))),
-         i: this.itemSvc.getServiceItems().pipe(catchError(()=>of([])))
+         p: this.projSvc.getProjects().pipe(catchError(() => of([]))),
+         i: this.itemSvc.getServiceItems().pipe(catchError(() => of([])))
       }).subscribe(data => {
-         this.projects = data.p.filter((p:any) => p.name.toLowerCase().includes(term));
-         this.items = data.i.filter((i:any) => i.title?.toLowerCase().includes(term) || i.referenceNumber?.toLowerCase().includes(term));
+         this.projects = data.p.filter((p: any) => p.name.toLowerCase().includes(term));
+         this.items = data.i.filter((i: any) => i.title?.toLowerCase().includes(term) || i.referenceNumber?.toLowerCase().includes(term));
          this.results = [...this.projects, ...this.items];
          this.loading = false; // Fast visual response
       });
    }
-   
+
    navigateAndClose(url: string) {
       this.router.navigateByUrl(url);
       this.closeSearch();

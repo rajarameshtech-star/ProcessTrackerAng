@@ -89,8 +89,10 @@ import { catchError } from 'rxjs/operators';
         </kendo-grid-column>
         <kendo-grid-column title="Actions" [width]="200" [sortable]="false">
           <ng-template kendoGridCellTemplate let-dataItem>
-             <button kendoButton icon="folder-open" fillMode="flat" themeColor="primary" title="Open" [routerLink]="['/service-items', dataItem.id]">Open</button>
-             <button kendoButton  fillMode="flat" themeColor="error" (click)="confirmDelete(dataItem)">Delete</button>
+             <div style="display: flex; gap: 8px;">
+                <button kendoButton icon="folder-open" fillMode="flat" themeColor="primary" title="Open" [routerLink]="['/service-items', dataItem.id]">Open</button>
+                <button kendoButton  fillMode="flat" themeColor="error" (click)="confirmDelete(dataItem)">Delete</button>
+             </div>
           </ng-template>
         </kendo-grid-column>
       </kendo-grid> 
