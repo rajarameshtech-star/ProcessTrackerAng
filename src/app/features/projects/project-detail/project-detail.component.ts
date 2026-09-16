@@ -149,13 +149,13 @@ export class ProjectDetailComponent implements OnInit {
       this.loading = true;
       forkJoin({
          proj: this.svc.getProject(this.projectId!),
-         apps: this.appSvc.getApplications().pipe(catchError(() => of([]))),
+         apps: this.appSvc.getApplications(this.projectId!).pipe(catchError(() => of([]))),
          maps: this.mapSvc.getByProject(this.projectId!).pipe(catchError(() => of([]))),
          procs: this.procSvc.getProcessDefinitions().pipe(catchError(() => of([])))
       }).subscribe(data => {
          this.project = data.proj;
          this.rv.add({ id: this.project.id, type: 'Project', title: this.project.name, url: '/projects/' + this.project.id });
-         this.applications = data.apps.filter((a: any) => a.projectId === this.projectId);
+         this.applications = data.apps;
 
          const mappedProcessIds = data.maps.map(m => m.processDefinitionId);
          this.mappedProcesses = data.procs.filter((p: any) => mappedProcessIds.includes(p.id));

@@ -7,7 +7,7 @@ import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { DialogsModule } from '@progress/kendo-angular-dialog';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { PageHeaderComponent } from '../../../shared/page-header/page-header.component';
 import { StatusChipComponent } from '../../../shared/status-chip/status-chip.component';
 import { PriorityChipComponent } from '../../../shared/priority-chip/priority-chip.component';
@@ -143,8 +143,16 @@ export class ServiceItemListComponent implements OnInit {
 
   itemToDelete: any = null;
 
+  private route = inject(ActivatedRoute);
+
   ngOnInit() {
-    this.refreshData();
+    this.route.queryParams.subscribe((params: any) => {
+      if (params['applicationId']) {
+        // If the select expects numeric IDs specifically depending on data maps, parse if needed, but string works usually
+        this.selectedAppId = params['applicationId'];
+      }
+      this.refreshData();
+    });
   }
 
   refreshData() {
