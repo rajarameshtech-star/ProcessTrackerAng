@@ -9,10 +9,10 @@ import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { ProcessFieldValueComponent } from '../process-field-value/process-field-value.component';
 
 @Component({
-  selector: 'app-dynamic-process-form',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputsModule, DropDownsModule, DateInputsModule, ButtonModule, ProcessFieldValueComponent],
-  template: `
+   selector: 'app-dynamic-process-form',
+   standalone: true,
+   imports: [CommonModule, ReactiveFormsModule, InputsModule, DropDownsModule, DateInputsModule, ButtonModule, ProcessFieldValueComponent],
+   template: `
     <div *ngIf="mode === 'view'" class="view-mode">
        <div class="completion-bar-container" *ngIf="fields.length > 0">
           <div class="completion-header">
@@ -92,7 +92,7 @@ import { ProcessFieldValueComponent } from '../process-field-value/process-field
        </form>
     </div>
   `,
-  styles: [`
+   styles: [`
     .req-star { color: #dc2626; margin-left: 2px; }
     .error-msg { color: #dc2626; display: block; margin-top: 4px; font-size: 0.75rem; }
     .mt-4 { margin-top: 24px; }
@@ -122,127 +122,150 @@ import { ProcessFieldValueComponent } from '../process-field-value/process-field
   `]
 })
 export class DynamicProcessFormComponent implements OnInit, OnChanges {
-  @Input() fields: any[] = [];
-  @Input() initialDataJson: string | null = null;
-  @Input() saving = false;
-  @Output() saveData = new EventEmitter<string>();
+   @Input() fields: any[] = [];
+   @Input() initialDataJson: string | null = null;
+   @Input() saving = false;
+   @Output() saveData = new EventEmitter<string>();
 
-  mode: 'view' | 'edit' = 'view';
-  parsedData: Record<string, any> = {};
-  form!: FormGroup;
-  
-  completionPercentage = 0;
-  missingRequired = 0;
+   mode: 'view' | 'edit' = 'view';
+   parsedData: Record<string, any> = {};
+   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+   completionPercentage = 0;
+   missingRequired = 0;
 
-  ngOnInit() {
-    this.parseData();
-    if (!this.initialDataJson) this.mode = 'edit';
-    this.buildForm();
-  }
+   constructor(private fb: FormBuilder) { }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['fields'] || changes['initialDataJson']) {
+   ngOnInit() {
       this.parseData();
+      if (!this.initialDataJson) this.mode = 'edit';
       this.buildForm();
-    }
-  }
+   }
 
-  parseData() {
-    if (this.initialDataJson) {
-      try { this.parsedData = JSON.parse(this.initialDataJson); } catch (e) { this.parsedData = {}; }
-    } else {
-      this.parsedData = {};
-    }
-    this.calculateCompletion();
-  }
-
-  hasValue(key: string): boolean {
-    const v = this.parsedData[key];
-    return v !== null && v !== undefined && v !== '';
-  }
-
-  calculateCompletion() {
-    const requiredFields = this.fields.filter(f => f.isRequired && f.isActive);
-    if (requiredFields.length === 0) {
-      this.completionPercentage = 100;
-      this.missingRequired = 0;
-      return;
-    }
-    
-    let completed = 0;
-    for (const rf of requiredFields) {
-      if (this.hasValue(rf.fieldName)) completed++;
-    }
-    this.missingRequired = requiredFields.length - completed;
-    this.completionPercentage = Math.round((completed / requiredFields.length) * 100);
-  }
-
-  buildForm() {
-    const group: any = {};
-    this.fields.filter(f => f.isActive).forEach(f => {
-      const validators = [];
-      if (f.isRequired) validators.push(Validators.required);
-      if (f.maxLength) validators.push(Validators.maxLength(f.maxLength));
-      if (f.minLength) validators.push(Validators.minLength(f.minLength));
-      if (f.fieldType === 7) {
-         // simple url regex
-         validators.push(Validators.pattern(/^(http|https):\/\/.*$/));
+   ngOnChanges(changes: SimpleChanges) {
+      if (changes['fields'] || changes['initialDataJson']) {
+         this.parseData();
+         this.buildForm();
       }
+   }
 
-      let val = this.parsedData[f.fieldName];
-      
-      // Default value provisioning
-      if (val === undefined || val === null) {
-         if (f.defaultValue) {
-            val = f.defaultValue;
-            if (f.fieldType === 1 || f.fieldType === 2) val = Number(val);
-            if (f.fieldType === 3) val = (val === 'true' || val === '1');
-            if (f.fieldType === 4 || f.fieldType === 5) val = new Date(val);
-         } else {
-            val = null;
-            if (f.fieldType === 3) val = false;
-         }
+   parseData() {
+      if (this.initialDataJson) {
+         try { this.parsedData = JSON.parse(this.initialDataJson); } catch (e) { this.parsedData = {}; }
       } else {
-         // Transform strings back to Date objects for editors
-         if ((f.fieldType === 4 || f.fieldType === 5) && typeof val === 'string') {
-            val = new Date(val);
-         }
+         this.parsedData = {};
+      }
+      this.calculateCompletion();
+   }
+
+   hasValue(key: string): boolean {
+      const v = this.parsedData[key];
+      return v !== null && v !== undefined && v !== '';
+   }
+
+   calculateCompletion() {
+      const requiredFields = this.fields.filter(f => f.isRequired && f.isActive);
+      if (requiredFields.length === 0) {
+         this.completionPercentage = 100;
+         this.missingRequired = 0;
+         return;
       }
 
-      group[f.fieldName] = new FormControl(val, validators);
-    });
-    this.form = this.fb.group(group);
-  }
+      let completed = 0;
+      for (const rf of requiredFields) {
+         if (this.hasValue(rf.fieldName)) completed++;
+      }
+      this.missingRequired = requiredFields.length - completed;
+      this.completionPercentage = Math.round((completed / requiredFields.length) * 100);
+   }
 
-  getOptions(field: any): string[] {
-    if (!field.optionsJson) return [];
-    try { return JSON.parse(field.optionsJson); } catch(e) { return []; }
-  }
+   buildForm() {
+      const group: any = {};
+      this.fields.filter(f => f.isActive).forEach(f => {
+         const validators = [];
+         if (f.isRequired) validators.push(Validators.required);
+         if (f.maxLength) validators.push(Validators.maxLength(f.maxLength));
+         if (f.minLength) validators.push(Validators.minLength(f.minLength));
+         if (f.fieldType === 7) {
+            // simple url regex
+            validators.push(Validators.pattern(/^(http|https):\/\/.*$/));
+         }
 
-  toggleEdit() {
-    this.mode = 'edit';
-  }
+         let val = this.parsedData[f.fieldName];
 
-  cancelEdit() {
-    if (!this.initialDataJson) {
-      // If we're canceling creation, there's nowhere to go but up in the parent.
-      // But we just revert form.
-      this.form.reset();
-    } else {
-      this.mode = 'view';
-      this.buildForm(); // revert values
-    }
-  }
+         // Default value provisioning
+         if (val === undefined || val === null) {
+            if (f.defaultValue) {
+               val = f.defaultValue;
+               if (f.fieldType === 1 || f.fieldType === 2) val = Number(val);
+               if (f.fieldType === 3) val = (val === 'true' || val === '1');
+               if (f.fieldType === 4 || f.fieldType === 5) val = new Date(val);
+            } else {
+               val = null;
+               if (f.fieldType === 3) val = false;
+            }
+         } else {
+            // Transform strings back to Date objects for editors
+            if ((f.fieldType === 4 || f.fieldType === 5) && typeof val === 'string') {
+               val = new Date(val);
+            }
+         }
 
-  onSave() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-    const raw = this.form.value;
-    const finalJSON = JSON.stringify(raw);
-    this.saveData.emit(finalJSON);
-  }
+         group[f.fieldName] = new FormControl(val, validators);
+      });
+      this.form = this.fb.group(group);
+   }
+
+   getOptions(field: any): string[] {
+      if (!field.optionsJson) return [];
+      try { return JSON.parse(field.optionsJson); } catch (e) { return []; }
+   }
+
+   toggleEdit() {
+      this.mode = 'edit';
+   }
+
+   cancelEdit() {
+      if (!this.initialDataJson) {
+         // If we're canceling creation, there's nowhere to go but up in the parent.
+         // But we just revert form.
+         this.form.reset();
+      } else {
+         this.mode = 'view';
+         this.buildForm(); // revert values
+      }
+   }
+
+   onSave() {
+      if (this.form.invalid) {
+         this.form.markAllAsTouched();
+         return;
+      }
+      const raw = { ...this.form.value };
+
+      // Format dates specifically for .NET and MS SQL
+      this.fields.forEach(f => {
+         const val = raw[f.fieldName];
+         if ((f.fieldType === 4 || f.fieldType === 5) && val) {
+            const d = new Date(val);
+            if (!isNaN(d.getTime())) {
+               const y = d.getFullYear();
+               const m = String(d.getMonth() + 1).padStart(2, '0');
+               const day = String(d.getDate()).padStart(2, '0');
+               const h = String(d.getHours()).padStart(2, '0');
+               const min = String(d.getMinutes()).padStart(2, '0');
+               const s = String(d.getSeconds()).padStart(2, '0');
+
+               if (f.fieldType === 4) {
+                  raw[f.fieldName] = `${y}-${m}-${day}`;
+               } else {
+                  raw[f.fieldName] = `${y}-${m}-${day}T${h}:${min}:${s}`;
+               }
+            }
+         }
+      });
+
+      const finalJSON = JSON.stringify(raw);
+      this.saveData.emit(finalJSON);
+   }
 }
