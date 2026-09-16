@@ -1,7 +1,7 @@
 export interface ProcessRecord {
-  id: string;
-  serviceItemId: string;
-  processDefinitionId: string;
+  id: string | number;
+  serviceItemId: string | number;
+  processDefinitionId: string | number;
   dataJson: string;
   createdDate?: string;
   modifiedDate?: string;

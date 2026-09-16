@@ -1,35 +1,35 @@
 
-import { Component, OnInit, inject } from '@angular/core'; 
-import { CommonModule, DatePipe } from '@angular/common'; 
-import { ActivatedRoute, RouterModule } from '@angular/router'; 
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ButtonModule } from '@progress/kendo-angular-buttons'; 
-import { IconsModule } from '@progress/kendo-angular-icons'; 
-import { DialogsModule } from '@progress/kendo-angular-dialog'; 
-import { InputsModule } from '@progress/kendo-angular-inputs'; 
-import { DropDownsModule } from '@progress/kendo-angular-dropdowns'; 
-import { IndicatorsModule } from '@progress/kendo-angular-indicators'; 
+import { ButtonModule } from '@progress/kendo-angular-buttons';
+import { IconsModule } from '@progress/kendo-angular-icons';
+import { DialogsModule } from '@progress/kendo-angular-dialog';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { IndicatorsModule } from '@progress/kendo-angular-indicators';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 
-import { StatusChipComponent } from '../../../shared/status-chip/status-chip.component'; 
-import { PriorityChipComponent } from '../../../shared/priority-chip/priority-chip.component'; 
-import { LoadingStateComponent } from '../../../shared/loading-state/loading-state.component'; 
+import { StatusChipComponent } from '../../../shared/status-chip/status-chip.component';
+import { PriorityChipComponent } from '../../../shared/priority-chip/priority-chip.component';
+import { LoadingStateComponent } from '../../../shared/loading-state/loading-state.component';
 import { DynamicProcessFormComponent } from '../../../shared/dynamic-process-form/dynamic-process-form.component';
 
-import { ServiceItemService } from '../../../core/services/service-item.service'; 
-import { ApplicationService } from '../../../core/services/application.service'; 
-import { ProcessDefinitionService } from '../../../core/services/process-definition.service'; 
-import { ProcessRecordService } from '../../../core/services/process-record.service'; 
-import { ProcessFieldService } from '../../../core/services/process-field.service'; 
-import { NotificationService } from '../../../core/services/notification.service'; 
-import { forkJoin, of } from 'rxjs'; 
-import { catchError } from 'rxjs/operators'; 
+import { ServiceItemService } from '../../../core/services/service-item.service';
+import { ApplicationService } from '../../../core/services/application.service';
+import { ProcessDefinitionService } from '../../../core/services/process-definition.service';
+import { ProcessRecordService } from '../../../core/services/process-record.service';
+import { ProcessFieldService } from '../../../core/services/process-field.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-service-item-detail',
-  standalone: true,
-  imports: [CommonModule, RouterModule, ButtonModule, IconsModule, DialogsModule, ReactiveFormsModule, InputsModule, DropDownsModule, IndicatorsModule, LayoutModule, StatusChipComponent, PriorityChipComponent, LoadingStateComponent, DatePipe, DynamicProcessFormComponent],
-  template: `
+   selector: 'app-service-item-detail',
+   standalone: true,
+   imports: [CommonModule, RouterModule, ButtonModule, IconsModule, DialogsModule, ReactiveFormsModule, InputsModule, DropDownsModule, IndicatorsModule, LayoutModule, StatusChipComponent, PriorityChipComponent, LoadingStateComponent, DatePipe, DynamicProcessFormComponent],
+   template: `
     <div class="breadcrumb mb-4">
        <a routerLink="/service-items">Service Items</a>
        <kendo-icon name="chevron-right" class="mx-2"></kendo-icon>
@@ -163,7 +163,7 @@ import { catchError } from 'rxjs/operators';
       </kendo-dialog-actions>
     </kendo-dialog>
   `,
-  styles: [`
+   styles: [`
     .mb-4 { margin-bottom: 16px; } .mb-2 { margin-bottom: 8px; } .mx-2 { margin: 0 8px; } .mt-2 { margin-top: 8px; }
     .breadcrumb { display: flex; align-items: center; font-size: 0.875rem; color: var(--muted-text-color); }
     .breadcrumb a { color: var(--primary-color); }
@@ -199,113 +199,126 @@ import { catchError } from 'rxjs/operators';
   `]
 })
 export class ServiceItemDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute); 
-  private svc = inject(ServiceItemService); 
-  private appSvc = inject(ApplicationService); 
-  private procSvc = inject(ProcessDefinitionService); 
-  private recSvc = inject(ProcessRecordService); 
-  private fieldSvc = inject(ProcessFieldService); 
-  private ns = inject(NotificationService); 
-  private fb = inject(FormBuilder);
-  
-  loading = true; dataLoading = true;
-  itemId: string | null = null;
-  item: any; app: any; process: any;
-  processRecord: any = null; processFields: any[] = []; 
-  
-  isEditing = false; saving = false; editForm!: FormGroup;
-  isCreatingData = false; processSaving = false;
+   private route = inject(ActivatedRoute);
+   private svc = inject(ServiceItemService);
+   private appSvc = inject(ApplicationService);
+   private procSvc = inject(ProcessDefinitionService);
+   private recSvc = inject(ProcessRecordService);
+   private fieldSvc = inject(ProcessFieldService);
+   private ns = inject(NotificationService);
+   private fb = inject(FormBuilder);
 
-  ngOnInit() {
-    this.itemId = this.route.snapshot.paramMap.get('id');
-    if (this.itemId) this.loadFullDetails();
-  }
+   loading = true; dataLoading = true;
+   itemId: string | null = null;
+   item: any; app: any; process: any;
+   processRecord: any = null; processFields: any[] = [];
 
-  loadFullDetails() {
-    this.loading = true;
-    this.svc.getServiceItem(this.itemId!).subscribe({
-       next: (data) => {
-         this.item = data;
-         forkJoin({
-           app: this.appSvc.getApplications().pipe(catchError(()=>of([]))),
-           proc: this.procSvc.getProcessDefinitions().pipe(catchError(()=>of([])))
-         }).subscribe(meta => {
-           this.app = meta.app.find((a: any) => a.id === this.item.applicationId);
-           this.process = meta.proc.find((p: any) => p.id === this.item.processDefinitionId);
-           this.loading = false;
-           this.loadProcessData();
+   isEditing = false; saving = false; editForm!: FormGroup;
+   isCreatingData = false; processSaving = false;
+
+   ngOnInit() {
+      this.itemId = this.route.snapshot.paramMap.get('id');
+      if (this.itemId) this.loadFullDetails();
+   }
+
+   loadFullDetails() {
+      this.loading = true;
+      this.svc.getServiceItem(this.itemId!).subscribe({
+         next: (data) => {
+            this.item = data;
+            forkJoin({
+               app: this.appSvc.getApplications().pipe(catchError(() => of([]))),
+               proc: this.procSvc.getProcessDefinitions().pipe(catchError(() => of([])))
+            }).subscribe(meta => {
+               this.app = meta.app.find((a: any) => a.id === this.item.applicationId);
+               this.process = meta.proc.find((p: any) => p.id === this.item.processDefinitionId);
+               this.loading = false;
+               this.loadProcessData();
+            });
+         },
+         error: () => this.loading = false
+      });
+   }
+
+   loadProcessData() {
+      this.dataLoading = true;
+      if (!this.item.processDefinitionId) { this.dataLoading = false; return; }
+
+      forkJoin({
+         f: this.fieldSvc.getProcessFields(this.item.processDefinitionId).pipe(catchError(() => of([]))),
+         r: this.recSvc.getRecordByServiceItem(this.itemId!).pipe(catchError(() => of(null)))
+      }).subscribe(res => {
+         this.processFields = res.f.sort((a: any, b: any) => a.sortOrder - b.sortOrder);
+         if (res.r) {
+            this.processRecord = res.r;
+            this.isCreatingData = false;
+         }
+         this.dataLoading = false;
+      });
+   }
+
+   onProcessDataSave(jsonPayload: string) {
+      this.processSaving = true;
+      if (this.processRecord) {
+         // Update
+         this.recSvc.updateRecord(this.processRecord.id, {
+            ...this.processRecord,
+            dataJson: jsonPayload,
+            modifiedDate: new Date().toISOString(),
+            modifiedBy: 'System User'
+         }).subscribe({
+            next: (updated) => {
+               this.ns.success('Process data updated');
+               this.processRecord = updated;
+               this.processSaving = false;
+               this.loadProcessData();
+            },
+            error: () => { this.ns.error('Failed to update process data'); this.processSaving = false; }
          });
-       },
-       error: () => this.loading = false
-    });
-  }
+      } else {
+         // Create
+         this.recSvc.createRecord({
+            id: 0,
+            serviceItemId: Number(this.itemId),
+            processDefinitionId: this.process.id,
+            dataJson: jsonPayload,
+            createdDate: new Date().toISOString(),
+            modifiedDate: new Date().toISOString(),
+            createdBy: 'System User',
+            modifiedBy: 'System User'
+         }).subscribe({
+            next: (created) => {
+               this.ns.success('Process data created');
+               this.processRecord = created;
+               this.processSaving = false;
+               this.isCreatingData = false;
+               this.loadProcessData();
+            },
+            error: () => { this.ns.error('Failed to save process data'); this.processSaving = false; }
+         });
+      }
+   }
 
-  loadProcessData() {
-    this.dataLoading = true;
-    if (!this.item.processDefinitionId) { this.dataLoading = false; return; }
-    
-    forkJoin({
-       f: this.fieldSvc.getProcessFields(this.item.processDefinitionId).pipe(catchError(()=>of([]))),
-       r: this.recSvc.getRecordByServiceItem(this.itemId!).pipe(catchError(()=>of(null)))
-    }).subscribe(res => {
-       this.processFields = res.f.sort((a: any, b: any) => a.sortOrder - b.sortOrder);
-       if (res.r) {
-          this.processRecord = res.r;
-          this.isCreatingData = false;
-       }
-       this.dataLoading = false;
-    });
-  }
-
-  onProcessDataSave(jsonPayload: string) {
-     this.processSaving = true;
-     if (this.processRecord) {
-        // Update
-        this.recSvc.updateRecord(this.processRecord.id, { ...this.processRecord, dataJson: jsonPayload }).subscribe({
-           next: (updated) => {
-              this.ns.success('Process data updated');
-              this.processRecord = updated;
-              this.processSaving = false;
-              // We rely on the child component calling its own state sync or we can reload
-              this.loadProcessData(); 
-           },
-           error: () => { this.ns.error('Failed to update process data'); this.processSaving = false; }
-        });
-     } else {
-        // Create
-        this.recSvc.createRecord({ serviceItemId: this.itemId!, processDefinitionId: this.process.id, dataJson: jsonPayload }).subscribe({
-           next: (created) => {
-              this.ns.success('Process data created');
-              this.processRecord = created;
-              this.processSaving = false;
-              this.isCreatingData = false;
-              this.loadProcessData();
-           },
-           error: () => { this.ns.error('Failed to save process data'); this.processSaving = false; }
-        });
-     }
-  }
-
-  openEdit() {
-    this.editForm = this.fb.group({
-      title: [this.item.title, Validators.required],
-      status: [this.item.status, Validators.required],
-      priority: [this.item.priority, Validators.required],
-      assignedTo: [this.item.assignedTo]
-    });
-    this.isEditing = true;
-  }
-  closeEdit() { this.isEditing = false; }
-  saveEdit() {
-    if (this.editForm.invalid) return;
-    this.saving = true;
-    this.svc.updateServiceItem(this.itemId!, { ...this.item, ...this.editForm.value }).subscribe({
-      next: () => {
-         this.ns.success('Updated successfully');
-         this.item = { ...this.item, ...this.editForm.value };
-         this.saving = false; this.isEditing = false;
-      },
-      error: () => { this.ns.error('Failed to update'); this.saving = false; }
-    });
-  }
+   openEdit() {
+      this.editForm = this.fb.group({
+         title: [this.item.title, Validators.required],
+         status: [this.item.status, Validators.required],
+         priority: [this.item.priority, Validators.required],
+         assignedTo: [this.item.assignedTo]
+      });
+      this.isEditing = true;
+   }
+   closeEdit() { this.isEditing = false; }
+   saveEdit() {
+      if (this.editForm.invalid) return;
+      this.saving = true;
+      this.svc.updateServiceItem(this.itemId!, { ...this.item, ...this.editForm.value }).subscribe({
+         next: () => {
+            this.ns.success('Updated successfully');
+            this.item = { ...this.item, ...this.editForm.value };
+            this.saving = false; this.isEditing = false;
+         },
+         error: () => { this.ns.error('Failed to update'); this.saving = false; }
+      });
+   }
 }

@@ -180,10 +180,14 @@ export class ServiceItemCreateComponent implements OnInit {
         if (processDataJson && createdItem.id) {
           // Chain Process Data persistence
           this.recSvc.createRecord({
-            serviceItemId: createdItem.id,
-            processDefinitionId: this.form.value.processDefinitionId,
+            id: 0,
+            serviceItemId: Number(createdItem.id),
+            processDefinitionId: Number(this.form.value.processDefinitionId),
             dataJson: processDataJson,
-            createdBy: this.form.value.assignedTo || 'Unassigned User'
+            createdDate: new Date().toISOString(),
+            modifiedDate: new Date().toISOString(),
+            createdBy: this.form.value.assignedTo || 'System User',
+            modifiedBy: this.form.value.assignedTo || 'System User'
           }).subscribe({
             next: () => {
               this.ns.success('Service Item & Process Data created.');
